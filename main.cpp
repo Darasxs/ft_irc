@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:24 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/04/19 16:50:10 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:05:31 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av)
 	}
 	else if (ac == 3)
 	{
-		(void)av;
+		Irc	irc = Irc(av[1], av[2]);
 		std::cout << "check" << std::endl;
 		return (0);
 	}

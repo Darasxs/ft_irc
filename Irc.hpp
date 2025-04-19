@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:45:36 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/04/19 16:50:45 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:10:14 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,21 @@
 
 # include <iostream>
 
+# define PORT 6666
+# define PASSWORD 123
+
 class	Irc
 {
 	public:
 		Irc();
+		Irc(std::string input_port, std::string input_password);
 		Irc(const Irc &other);
 		Irc &operator=(const Irc &other);
 		~Irc();
 
 	private:
-
+		std::string	input_port;
+		std::string	input_password;
 };
 
 #endif
