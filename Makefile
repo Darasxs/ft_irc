@@ -6,13 +6,13 @@
 #    By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/30 16:15:27 by paprzyby          #+#    #+#              #
-#    Updated: 2025/04/18 18:23:33 by paprzyby         ###   ########.fr        #
+#    Updated: 2025/04/19 16:49:58 by paprzyby         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .SILENT:
 
-NAME =		ft_irc
+NAME =		ircserv
 
 SRC =		main.cpp
 
