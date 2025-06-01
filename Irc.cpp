@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:54:41 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/04/19 17:25:01 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:17:57 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 Irc::Irc()	{}
 
-Irc::Irc(std::string input_port, std::string input_password)
+Irc::Irc(int input_port, std::string input_password)
 {
 	this->input_port = input_port;
 	this->input_password = input_password;
-	//
-	std::cout << this->input_port << std::endl;
-	std::cout << this->input_password << std::endl;
 }
 
 Irc::Irc(const Irc &other)
 {
 	*this = other;
+	//not finished
 }
 
 Irc &Irc::operator=(const Irc &other)
@@ -36,18 +34,23 @@ Irc &Irc::operator=(const Irc &other)
 
 	//}
 	return (*this);
+	//not finished
 }
 
-Irc::~Irc()	{}
-
-void	Irc::input_validation(const Irc &irc)
+Irc::~Irc()
 {
-	try
-	{
+	//free memory?
+	//not finished
+}
 
+void	Irc::input_validation()
+{
+	if (input_port != DEFAULT_PORT)
+	{
+		throw std::runtime_error("Error: port does not match the default port number 6667.");
 	}
-	catch(const std::exception& e)
+	else if (input_password.empty()) //add more password requirements?
 	{
-
+		throw std::runtime_error("Error: invalid password.");
 	}
 }

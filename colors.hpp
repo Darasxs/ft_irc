@@ -1,40 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Irc.hpp                                            :+:      :+:    :+:   */
+/*   colors.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/19 16:45:36 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/01 17:38:54 by paprzyby         ###   ########.fr       */
+/*   Created: 2025/06/01 17:38:09 by paprzyby          #+#    #+#             */
+/*   Updated: 2025/06/01 17:38:35 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRC_HPP
-# define IRC_HPP
+#ifndef COLORS_HPP
+# define COLORS_HPP
 
 # include <iostream>
-# include <cstdlib>
-# include <unistd.h>
 
-# include "colors.hpp"
+constexpr std::string_view RED		= "\033[0;31m";
+constexpr std::string_view GREEN	= "\033[0;32m";
+constexpr std::string_view YELLOW	= "\033[0;33m";
 
-# define DEFAULT_PORT 6667
-
-class	Irc
-{
-	public:
-		Irc();
-		Irc(int input_port, std::string input_password);
-		Irc(const Irc &other);
-		Irc &operator=(const Irc &other);
-		~Irc();
-
-		void	input_validation();
-
-	protected:
-		int			input_port;
-		std::string	input_password;
-};
+constexpr std::string_view RESET	= "\033[0m";
 
 #endif
