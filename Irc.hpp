@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:45:36 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/04/19 17:10:14 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:23:08 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ class	Irc
 		Irc(const Irc &other);
 		Irc &operator=(const Irc &other);
 		~Irc();
+
+		void	input_validation(const Irc &irc);
 
 	private:
 		std::string	input_port;

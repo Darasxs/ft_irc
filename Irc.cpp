@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:54:41 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/04/19 17:14:39 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:25:01 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,15 @@ Irc &Irc::operator=(const Irc &other)
 }
 
 Irc::~Irc()	{}
+
+void	Irc::input_validation(const Irc &irc)
+{
+	try
+	{
+
+	}
+	catch(const std::exception& e)
+	{
+
+	}
+}
