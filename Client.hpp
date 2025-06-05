@@ -6,7 +6,7 @@
 class Client
 {
   private:
-	int clientFd;
+	int clientFd; // the socket for individual connections to the server
 	std::string ipAddress;
 
   public:
