@@ -2,12 +2,16 @@
 # define CLIENT_HPP
 
 # include <iostream>
-
+# include <vector>
 class Client
 {
   private:
 	int clientFd; // the socket for individual connections to the server
+	std::string nickname;
+	std::string realName;
 	std::string ipAddress;
+	bool isOperator;
+	std::vector<std::string> channels; // which channels is each client a part of
 
   public:
 	Client(void);
@@ -19,6 +23,10 @@ class Client
 	int getFd(void);
 	void setFd(int clientFd);
 	void setIpAddress(std::string ipAddress);
+
+	void joinChannel(const std::string &channelName);
+	void leaveChannel(const std::string &channelName);
+	std::vector<std::string> getChannels(void) const;
 };
 
 #endif
