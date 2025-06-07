@@ -10,10 +10,9 @@ class Channel
   private:
 	std::string name;
 	std::string topic;
-	std::vector<Client> members;
-	std::vector<Client> operators;
+	std::vector<Client*> members;
+	std::vector<Client*> operators;
   public:
-	// some function for sending message in the channel?
 	Channel(void);
 	Channel(const std::string &name);
 	Channel(const Channel &other);
@@ -24,16 +23,15 @@ class Channel
 	std::string getName(void) const;
 	void setTopic(const std::string &topic);
 
-	void addClient(const Client &client);
-	void removeClient(const Client &client);
+	void addClient(Client *client);
+	void removeClient(Client *client);
 	bool isMember(Client *client) const;
 
-	void addOperator(const Client &client);
-	void removeOperator(const Client &client);
+	void addOperator(Client *client);
+	void removeOperator(Client *client);
 	bool isOperator(Client *client) const;
 
-	void broadcastMessage(const std::string &message, Client *sender);
-
+	void sendMessage(const std::string &message, Client *sender);
 };
 
 #endif;
