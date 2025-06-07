@@ -32,6 +32,9 @@ class Channel
 	bool isOperator(Client *client) const;
 
 	void sendMessage(const std::string &message, Client *sender);
+
+	std::vector<Client*> getMembers(void) const;
+	std::vector<Client*> getOperators(void) const;
 };
 
 #endif;
