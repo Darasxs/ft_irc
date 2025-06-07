@@ -24,8 +24,7 @@ class Channel
 	void setTopic(const std::string &topic);
 
 	void addClient(Client *client);
-	void removeClient(Client *client);
-	bool isMember(Client *client) const;
+	void removeClient(Client *client);	bool isMember(Client *client) const;
 
 	void addOperator(Client *client);
 	void removeOperator(Client *client);

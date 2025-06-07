@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/04/18 19:17:08 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/07 19:36:23 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,29 @@ Client &Client::operator=(const Client &other)
 }
 
 Client::~Client(void) {}
+
+int Client::getFd(void)
+{
+	return this->clientFd;
+}
+
+void Client::setFd(int clientFd)
+{
+	this->clientFd = clientFd;
+}
+
+void Client::setIpAddress(std::string ipAddress)
+{
+	this->ipAddress = ipAddress;
+}
+
+void Client::setNickname(std::string &nickname)
+{
+	this->nickname = nickname;
+}
+
+std::string Client::getNickname(void)
+{
+	return this->nickname;
+}
+

@@ -24,18 +24,18 @@ class Client
 	void setFd(int clientFd);
 	void setIpAddress(std::string ipAddress);
 
-	std::string getNickname(void) const;
-	void setNickname(const std::string &nickname);
+	void setNickname(std::string &nickname);
+	std::string getNickname(void);
 
-	std::string getRealName(void) const;
-	void setRealName(const std::string &realName);
+	void setRealName(std::string &realName);
+	std::string getRealName(void);
 
 	void joinChannel(const std::string &channelName);
 	void leaveChannel(const std::string &channelName);
-	std::vector<std::string> getChannels(void) const;
-	bool isInChannel(const std::string &channelName) const;
+	std::vector<std::string> getChannels(void);
+	bool isInChannel(const std::string &channelName);
 
-	void sendMessage(const std::string &message) const;
+	void sendMessage(const std::string &message);
 
 	void operatorPromotion(void);
 	void operatorDemotion(void);
