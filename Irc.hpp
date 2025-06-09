@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:45:36 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/01 17:38:54 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:01:47 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 
 # include "colors.hpp"
+# include "Server.hpp"
 
 # define DEFAULT_PORT 6667
 
