@@ -15,7 +15,6 @@ class Client
 
   public:
 	Client(void);
-	Client(int clientFd, std::string &ipAddress);
 	Client(const Client &other);
 	Client &operator=(const Client &other);
 	~Client(void);

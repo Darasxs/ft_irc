@@ -36,4 +36,4 @@ class Channel
 	std::vector<Client*> getOperators(void) const;
 };
 
-#endif;
+#endif

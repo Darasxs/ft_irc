@@ -6,18 +6,13 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/09 12:14:13 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:54:41 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(void) : clientFd(-1), ipAddress("")
-{
-}
-
-Client::Client(int clientFd, std::string &ipAddress) : clientFd(clientFd),
-	ipAddress(ipAddress)
+Client::Client(void) : clientFd(-1), nickname(""), realName(""), ipAddress(""), isOperator(false), channels()
 {
 }
 
@@ -31,7 +26,11 @@ Client &Client::operator=(const Client &other)
 	if (this != &other)
 	{
 		this->clientFd = other.clientFd;
+		this->nickname = other.nickname;
+		this->realName = other.realName;
 		this->ipAddress = other.ipAddress;
+		this->isOperator = other.isOperator;
+		this->channels = other.channels;
 	}
 	return (*this);
 }
