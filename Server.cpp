@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/09 18:03:32 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:47:05 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,38 @@ void	Server::serverInitialization()
 	//Error handling: If the listen call fails (e.g., due to insufficient system resources), an exception is thrown.
 }
 
-void	Server::serverStart()
-{
-	while (1)
+void Server::serverStart()
 	{
-		//loop to continuously accept and process client requests
-		//int clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
-		//if (clientFd == -1) {
-		//	std::cerr << "Failed to accept connection" << std::endl;
-		//	continue;
+	sockaddr_in client_addr;
+	socklen_t client_len = sizeof(client_addr);
+
+	while (true)
+	{
+		// Accept a new client connection
+		int clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
+		if (clientFd == -1)
+		{
+			std::cerr << "Failed to accept connection" << std::endl;
+			continue;
+		}
+
+		std::cout << "Client connected!" << std::endl;
+
+		//nie wiem czy tutaj odcyztac ta wiadomosc i ja zapisac moze w strucie, 
+		// a potem w innych funkcjach sparsowac i wyslac ta wiadomosc?
+		
+		//// Read a message from the client
+		//char buffer[1024];
+		//ssize_t bytesRead = read(clientFd, buffer, sizeof(buffer));
+		//if (bytesRead > 0)
+		//{
+		//    std::cout << "Received: " << std::string(buffer, bytesRead) << std::endl;
+
+		//    // Echo the message back to the client
+		//    write(clientFd, buffer, bytesRead);
 		//}
-		//std::cout << "Client connected!" << std::endl;
-		// Handle the client connection (e.g., read/write data)
+
+		//// Close the client connection
+		//close(clientFd);
 	}
 }
