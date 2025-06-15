@@ -6,13 +6,13 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/15 18:49:46 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:31:04 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include "Client.hpp"
-#include "poll.h"
+
 
 Server::Server() : serverFd(-1) {}
 
@@ -75,13 +75,20 @@ void	Server::acceptClients()
 	newClient.setFd(clientFd);
 	newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
 	clients[clientFd] = newClient;
+
+	pollfd clientPollFd = {clientFd, POLLIN, 0};
+	fds.push_back(clientPollFd);
+
 	std::cout << "Client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
 }
 
 void Server::serverStart()
 {
+	pollfd serverPollFd = {serverFd, POLLIN, 0};
+	fds.push_back(serverPollFd);
 	while (true)
 	{
+		poll();
 		acceptClients();
 	}
 }

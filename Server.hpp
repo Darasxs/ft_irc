@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/15 18:48:45 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:07:54 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 # include <map>
 # include <sys/socket.h>
 # include <arpa/inet.h>
+# include <poll.h>
 
 # include "Client.hpp"
 # include "Channel.hpp"
+
 
 class Server
 {
@@ -53,6 +55,7 @@ class Server
 		std::map<std::string, Channel*>	channels;
 		bool							isRunning;
 		std::string						password;
+		std::vector<pollfd>				fds;
 };
 
 #endif
