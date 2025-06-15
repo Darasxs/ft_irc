@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/15 19:31:04 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:39:50 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,28 @@ void Server::serverStart()
 {
 	pollfd serverPollFd = {serverFd, POLLIN, 0};
 	fds.push_back(serverPollFd);
+
 	while (true)
 	{
-		poll();
+		int pollReturn = poll(fds.data(), fds.size(), -1);
+		if (pollReturn == -1)
+			throw std::runtime_error("poll failed");
+
+		for (size_t i = 0; i < fds.size(); i++)
+		{
+			if (fds[i].revents & POLLIN);
+			{
+				if (fds[i].fd == serverFd)
+				{
+					acceptClients();
+				}
+				else
+				{
+					// hmmmmm ?
+				}
+			}
+		}
+
 		acceptClients();
 	}
 }
