@@ -6,12 +6,13 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/15 17:40:01 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/15 18:49:46 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include "Client.hpp"
+#include "poll.h"
 
 Server::Server() : serverFd(-1) {}
 
@@ -28,6 +29,7 @@ Server &Server::operator=(const Server &other)
 	{
 		this->portNumber = other.portNumber;
 		this->serverFd = other.serverFd;
+		this->clients = other.clients;
 	}
 	return (*this);
 }
@@ -57,28 +59,29 @@ void	Server::serverInitialization()
 		throw std::runtime_error("Failed to listen on socket");
 }
 
-void Server::serverStart()
+void	Server::acceptClients()
 {
 	sockaddr_in client_addr;
 	socklen_t client_len = sizeof(client_addr);
-	std::map<int, Client> clients;
+
+	int clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
+	if (clientFd == -1)
+	{
+		std::cerr << "Failed to accept connection" << std::endl;
+		return;
+	}
 	
+	Client newClient;
+	newClient.setFd(clientFd);
+	newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
+	clients[clientFd] = newClient;
+	std::cout << "Client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
+}
+
+void Server::serverStart()
+{
 	while (true)
 	{
-		int clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
-		if (clientFd == -1)
-		{
-			// tu nie jestem pewien, ale chyba musi to byc jakos inaczej napisane
-			// nie wiem czy nie czasami throw itp.
-			std::cerr << "Failed to accept connection" << std::endl;
-			continue;
-		}
-		
-		Client newClient;
-		newClient.setFd(clientFd);
-		newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
-		clients[clientFd] = newClient;
-		std::cout << "Client connected!" << std::endl;
-
+		acceptClients();
 	}
 }

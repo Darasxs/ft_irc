@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/09 18:03:30 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/15 18:48:45 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Server
 
 		void		serverInitialization();
 		void		serverStart();
+		void		acceptClients();
 		void		addClient(Client *client);
 		void		removeClient(Client *client);
 		Client*		getClient(const std::string &nickname); // identifying client by nickname, for example to send private message to him
@@ -48,7 +49,7 @@ class Server
 		int								portNumber;
 		int								serverFd; // socket that listens for connections, binds to a specific port and accept conncections
 		std::string 					hostName;
-		std::vector<Client*>			clients;
+		std::map<int, Client>			clients;
 		std::map<std::string, Channel*>	channels;
 		bool							isRunning;
 		std::string						password;
