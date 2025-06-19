@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/15 19:39:50 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:04:36 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	Server::serverInitialization()
 
 void	Server::acceptClients()
 {
+	std::cout << "Server is listening on port " << portNumber << std::endl;
 	sockaddr_in client_addr;
 	socklen_t client_len = sizeof(client_addr);
 
@@ -70,7 +71,7 @@ void	Server::acceptClients()
 		std::cerr << "Failed to accept connection" << std::endl;
 		return;
 	}
-	
+
 	Client newClient;
 	newClient.setFd(clientFd);
 	newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
@@ -95,7 +96,7 @@ void Server::serverStart()
 
 		for (size_t i = 0; i < fds.size(); i++)
 		{
-			if (fds[i].revents & POLLIN);
+			if (fds[i].revents & POLLIN)
 			{
 				if (fds[i].fd == serverFd)
 				{
@@ -103,11 +104,33 @@ void Server::serverStart()
 				}
 				else
 				{
-					// hmmmmm ?
+					char buffer[1024];
+					ssize_t bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
+					if (bytesRead > 0)
+					{
+						buffer[bytesRead] = '\0'; // Null-terminate the received data
+						std::cout << "Received from client: " << buffer << std::endl;
+
+						// Echo the message back to the client
+						send(fds[i].fd, buffer, bytesRead, 0);
+					}
+					else if (bytesRead == 0)
+					{
+						// Client disconnected
+						std::cout << "Client disconnected: " << fds[i].fd << std::endl;
+						close(fds[i].fd);
+						fds.erase(fds.begin() + i);
+						i--; // Adjust index after removing the client
+					}
+					else
+					{
+						std::cerr << "Error reading from client: " << fds[i].fd << " (errno: " << errno << ")" << std::endl;
+                        close(fds[i].fd);
+                        fds.erase(fds.begin() + i);
+                        i--; // Adjust index after removing the client
+					}
 				}
 			}
 		}
-
-		acceptClients();
 	}
 }
