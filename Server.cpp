@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 16:09:38 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 17:56:49 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
 #include "Server.hpp"
 
-Server::Server() : serverFd(-1)
-{
-}
-
-Server::Server(int serverFd) : serverFd(serverFd)
-{
-}
+Server::Server()	{}
 
 Server::Server(const Server &other)
 {
@@ -36,9 +29,7 @@ Server &Server::operator=(const Server &other)
 	return (*this);
 }
 
-Server::~Server()
-{
-}
+Server::~Server()	{}
 
 void Server::serverInitialization()
 {
@@ -61,15 +52,21 @@ void Server::serverInitialization()
 	}
 	if (listen(serverFd, SOMAXCONN) == -1)
 		throw std::runtime_error("Failed to listen on socket");
+	//if ( fcntl( _serverFD, F_SETFL, O_NONBLOCK ) < 0 )
+	//	throw std::runtime_error( "Failed to set non-blocking mode" );
+	//You can set or retrieve flags that control the behavior of a file descriptor, such as enabling non-blocking mode.
+	std::cout << YELLOW;
+	std::cout << "Listening on port " << PORT_NUMBER << "..." << std::endl;
+	std::cout << RESET;
 }
 
 void Server::acceptClients()
 {
 	sockaddr_in	client_addr;
 	socklen_t	client_len;
-	int			clientFd;
 	Client		newClient;
 	pollfd		clientPollFd;
+	int			clientFd;
 
 	client_len = sizeof(client_addr);
 	clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
@@ -83,7 +80,9 @@ void Server::acceptClients()
 	clients[clientFd] = newClient;
 	clientPollFd = {clientFd, POLLIN, 0};
 	fds.push_back(clientPollFd);
-	std::cout << "New client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
+	std::cout << GREEN;
+	std::cout << "New client connection from " << inet_ntoa(client_addr.sin_addr) << std::endl;
+	std::cout << RESET;
 }
 
 void Server::handleData(size_t &i)
@@ -96,12 +95,16 @@ void Server::handleData(size_t &i)
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
-		std::cout << "Received from client: " << buffer << std::endl;
+		if (buffer[0] == '\n')
+			return ;
+		std::cout << buffer;
 		//client.parseData(fds[i].fd, std::string(buffer));
 	}
 	else if (bytesRead == 0)
 	{
-		std::cout << "Client disconnected: " << fds[i].fd << std::endl;
+		std::cout << RED;
+		std::cout << "Client disconnected..." << std::endl;
+		std::cout << RESET;
 		close(fds[i].fd);
 		fds.erase(fds.begin() + i);
 		i--;
@@ -126,7 +129,7 @@ void Server::serverStart()
 	{
 		pollReturn = poll(fds.data(), fds.size(), -1);
 		if (pollReturn == -1)
-			throw std::runtime_error("poll failed");
+			throw std::runtime_error("Error: poll failed");
 		for (size_t i = 0; i < fds.size(); i++)
 		{
 			if (fds[i].revents & POLLIN)
@@ -135,10 +138,10 @@ void Server::serverStart()
 				{
 					acceptClients();
 				}
-				//else
-				//{
-				//	handleData(i);
-				//}
+				else
+				{
+					handleData(i);
+				}
 			}
 		}
 	}

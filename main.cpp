@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:24 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 16:00:57 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/21 17:36:06 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,11 @@ int	main(int ac, char **av)
 			Irc	irc = Irc(std::atoi(av[1]), av[2]);
 			irc.input_validation();
 			system("clear");
-			std::cout << GREEN;
+			std::cout << BOLD;
 			std::cout << "=============================================================" << std::endl;
 			std::cout << "=========== IRC Server created by Pawel and Darek ===========" << std::endl;
 			std::cout << "=============================================================" << std::endl;
 			sleep(1);
-			std::cout << YELLOW;
-			std::cout << "Server is starting..." << std::endl;
-			std::cout << "Listening on port: " << av[1] << std::endl;
-			std::cout << std::endl;
-			std::cout << RESET;
 			//main logic here:
 			Server server;
 			server.serverInitialization();

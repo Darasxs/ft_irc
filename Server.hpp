@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 16:07:16 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 17:56:00 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "colors.hpp"
 
 # define PORT_NUMBER 6667
 
@@ -30,7 +31,6 @@ class Server
 {
 	public:
 		Server();
-		Server(int serverFd);
 		Server(const Server &other);
 		Server &operator=(const Server &other);
 		~Server();
@@ -41,17 +41,17 @@ class Server
 		void		handleData(size_t &i);
 		void		addClient(Client *client);
 		void		removeClient(Client *client);
-		Client*		getClient(const std::string &nickname); // identifying client by nickname, for example to send private message to him
+		Client*		getClient(const std::string &nickname);
 
 		void		createChannel(const std::string &channelName);
 		void		deleteChannel(const std::string &channelName);
-		Channel*	getChannel(const std::string &channelName);// similar as getClient
+		Channel		*getChannel(const std::string &channelName);
 
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
 
 	private:
-		int								serverFd; // socket that listens for connections, binds to a specific port and accept conncections
+		int								serverFd;
 		std::string 					hostName;
 		std::map<int, Client>			clients;
 		std::map<std::string, Channel*>	channels;
