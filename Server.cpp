@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 14:08:23 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:27:01 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,18 @@ void Server::acceptClients()
 	}
 	newClient.setFd(clientFd);
 	newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
-	clients[clientFd] = newClient;
+	clients[clientFd] = newClient;	
 	clientPollFd = {clientFd, POLLIN, 0};
 	fds.push_back(clientPollFd);
 	std::cout << "Client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
 }
 
-void Server::read_data(size_t &i)
+void Server::parseData(int clientFd, const std::string &data)
+{
+	// parsing data here
+}
+
+void Server::handleData(size_t &i)
 {
 	char	buffer[1024];
 	ssize_t	bytesRead;
@@ -96,7 +101,8 @@ void Server::read_data(size_t &i)
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
-		clients[fds[i].fd].setReceivedData(std::string(buffer));
+		std::cout << "Received from client: " << buffer << std::endl;
+		parseData(fds[i].fd, std::string(buffer));
 	}
 	else if (bytesRead == 0)
 	{
@@ -136,12 +142,7 @@ void Server::serverStart()
 				}
 				else
 				{
-					read_data(i);
-					std::string clientData = clients[fds[i].fd].getReceivedData();
-					if (!clientData.empty())
-					{
-						// parse the data
-					}
+					handleData(i);
 				}
 			}
 		}

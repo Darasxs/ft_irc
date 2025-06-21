@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 14:08:45 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:17:04 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ class Client
 
 	int getFd(void);
 	void setFd(int clientFd);
-
-	void setReceivedData(const std::string &data);
-	std::string getReceivedData() const;
 
 	void setIpAddress(std::string ipAddress);
 
