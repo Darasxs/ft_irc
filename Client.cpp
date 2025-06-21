@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 14:08:46 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:33:27 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ std::string Client::getRealName(void)
 	return (this->realName);
 }
 
-void Client::setReceivedData(const std::string &data)
-{
-	receivedData = data;
-}
+//void Client::setReceivedData(const std::string &data)
+//{
+//	receivedData = data;
+//}
 
-std::string Client::getReceivedData() const
-{
-	return (receivedData);
-}
+//std::string Client::getReceivedData() const
+//{
+//	return (receivedData);
+//}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 15:26:11 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:46:46 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 
+# define PORT_NUMBER 6667
 
 class Server
 {
@@ -52,7 +53,6 @@ class Server
 
 
 	private:
-		int								portNumber;
 		int								serverFd; // socket that listens for connections, binds to a specific port and accept conncections
 		std::string 					hostName;
 		std::map<int, Client>			clients;

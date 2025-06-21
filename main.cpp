@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:24 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/14 14:33:00 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:00:57 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int ac, char **av)
 			std::cout << YELLOW;
 			std::cout << "Server is starting..." << std::endl;
 			std::cout << "Listening on port: " << av[1] << std::endl;
+			std::cout << std::endl;
 			std::cout << RESET;
 			//main logic here:
 			Server server;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 15:27:01 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:59:59 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ Server &Server::operator=(const Server &other)
 {
 	if (this != &other)
 	{
-		this->portNumber = other.portNumber;
 		this->serverFd = other.serverFd;
 		this->clients = other.clients;
 	}
@@ -43,22 +42,23 @@ Server::~Server()
 
 void Server::serverInitialization()
 {
-	int			opt;
-	sockaddr_in	server_addr;
+	int opt = 1;
+	sockaddr_in server_addr;
 
 	serverFd = socket(AF_INET, SOCK_STREAM, 0);
 	if (serverFd == -1)
 		throw std::runtime_error("Failed to create socket");
-	opt = 1;
 	if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
 		throw std::runtime_error("Failed to set socket options");
 	std::memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr.s_addr = INADDR_ANY;
-	server_addr.sin_port = htons(portNumber);
-	if (bind(serverFd, (struct sockaddr *)&server_addr, sizeof(server_addr)) ==
-		-1)
+	server_addr.sin_port = htons(PORT_NUMBER);
+	if (bind(serverFd, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1)
+	{
+		std::cerr << "Error: " << strerror(errno) << std::endl;
 		throw std::runtime_error("Failed to bind socket");
+	}
 	if (listen(serverFd, SOMAXCONN) == -1)
 		throw std::runtime_error("Failed to listen on socket");
 }
@@ -71,7 +71,6 @@ void Server::acceptClients()
 	Client		newClient;
 	pollfd		clientPollFd;
 
-	std::cout << "Server is listening on port " << portNumber << std::endl;
 	client_len = sizeof(client_addr);
 	clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
 	if (clientFd == -1)
@@ -81,14 +80,16 @@ void Server::acceptClients()
 	}
 	newClient.setFd(clientFd);
 	newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
-	clients[clientFd] = newClient;	
+	clients[clientFd] = newClient;
 	clientPollFd = {clientFd, POLLIN, 0};
 	fds.push_back(clientPollFd);
-	std::cout << "Client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
+	std::cout << "New client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
 }
 
 void Server::parseData(int clientFd, const std::string &data)
 {
+	(void)clientFd;
+	(void)data;
 	// parsing data here
 }
 
@@ -140,10 +141,10 @@ void Server::serverStart()
 				{
 					acceptClients();
 				}
-				else
-				{
-					handleData(i);
-				}
+				//else
+				//{
+				//	handleData(i);
+				//}
 			}
 		}
 	}
