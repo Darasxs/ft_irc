@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 15:59:59 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:09:38 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,18 @@ void Server::acceptClients()
 	std::cout << "New client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
 }
 
-void Server::parseData(int clientFd, const std::string &data)
-{
-	(void)clientFd;
-	(void)data;
-	// parsing data here
-}
-
 void Server::handleData(size_t &i)
 {
 	char	buffer[1024];
 	ssize_t	bytesRead;
+	Client	client;
 
 	bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
 		std::cout << "Received from client: " << buffer << std::endl;
-		parseData(fds[i].fd, std::string(buffer));
+		//client.parseData(fds[i].fd, std::string(buffer));
 	}
 	else if (bytesRead == 0)
 	{

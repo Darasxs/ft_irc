@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 15:46:46 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:07:16 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ class Server
 
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
-		void 		parseData(int clientFd, const std::string &data);
-
 
 	private:
 		int								serverFd; // socket that listens for connections, binds to a specific port and accept conncections

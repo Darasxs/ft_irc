@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 15:33:27 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:09:49 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,15 @@ std::string Client::getRealName(void)
 	return (this->realName);
 }
 
-//void Client::setReceivedData(const std::string &data)
+//void Client::parseData(int clientFd, const std::string &data)
 //{
-//	receivedData = data;
-//}
+//	Client &client = clients[clientFd];
 
-//std::string Client::getReceivedData() const
-//{
-//	return (receivedData);
+//	if (data.find("KICK") != std::string::npos)
+//	{
+//		if (!client.isOperator)
+//		{
+//			handleKick
+//		}
+//	}
 //}
