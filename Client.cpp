@@ -6,13 +6,14 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/14 15:53:53 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 14:08:46 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(void) : clientFd(-1), nickname(""), realName(""), ipAddress(""), isOperator(false), channels()
+Client::Client(void) : clientFd(-1), nickname(""), realName(""), ipAddress(""),
+	isOperator(false), channels()
 {
 }
 
@@ -74,3 +75,12 @@ std::string Client::getRealName(void)
 	return (this->realName);
 }
 
+void Client::setReceivedData(const std::string &data)
+{
+	receivedData = data;
+}
+
+std::string Client::getReceivedData() const
+{
+	return (receivedData);
+}

@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 13:02:09 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 14:02:41 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class Server
 		void		serverInitialization();
 		void		serverStart();
 		void		acceptClients();
-		std::string	read_data(size_t &i);
+		void		read_data(size_t &i);
 		void		addClient(Client *client);
 		void		removeClient(Client *client);
 		Client*		getClient(const std::string &nickname); // identifying client by nickname, for example to send private message to him
@@ -58,7 +58,6 @@ class Server
 		bool							isRunning;
 		std::string						password;
 		std::vector<pollfd>				fds;
-		std::string						receivedData;
 };
 
 #endif

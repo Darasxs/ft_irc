@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 13:53:27 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 14:08:23 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void Server::acceptClients()
 	std::cout << "Client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
 }
 
-std::string Server::read_data(size_t &i)
+void Server::read_data(size_t &i)
 {
 	char	buffer[1024];
 	ssize_t	bytesRead;
@@ -96,8 +96,7 @@ std::string Server::read_data(size_t &i)
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
-		std::cout << "Received from client: " << buffer << std::endl;
-		return (std::string(buffer));
+		clients[fds[i].fd].setReceivedData(std::string(buffer));
 	}
 	else if (bytesRead == 0)
 	{
@@ -105,7 +104,6 @@ std::string Server::read_data(size_t &i)
 		close(fds[i].fd);
 		fds.erase(fds.begin() + i);
 		i--;
-		return ("");
 	}
 	else
 	{
@@ -113,7 +111,6 @@ std::string Server::read_data(size_t &i)
 		close(fds[i].fd);
 		fds.erase(fds.begin() + i);
 		i--;
-		return ("");
 	}
 }
 
@@ -139,8 +136,9 @@ void Server::serverStart()
 				}
 				else
 				{
-					receivedData = read_data(i);
-					if (!receivedData.empty())
+					read_data(i);
+					std::string clientData = clients[fds[i].fd].getReceivedData();
+					if (!clientData.empty())
 					{
 						// parse the data
 					}

@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/15 18:10:20 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 14:08:45 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Client
 	std::string ipAddress;
 	bool isOperator;
 	std::vector<std::string> channels; // which channels is each client a part of
+	std::string						receivedData;
 
   public:
 	Client(void);
@@ -33,6 +34,10 @@ class Client
 
 	int getFd(void);
 	void setFd(int clientFd);
+
+	void setReceivedData(const std::string &data);
+	std::string getReceivedData() const;
+
 	void setIpAddress(std::string ipAddress);
 
 	void setNickname(std::string &nickname);
