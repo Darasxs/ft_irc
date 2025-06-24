@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 17:56:00 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:38:42 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ class Server
 
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
+
+		void parseData(int fd, const std::vector<std::string> &tokens);
+		std::vector<std::string> splitBuffer(const std::string &buffer);
+
 
 	private:
 		int								serverFd;
