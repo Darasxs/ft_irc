@@ -6,12 +6,13 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 16:09:38 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:28:05 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 #include "Server.hpp"
+#include <sstream>
 
 Server::Server() : serverFd(-1)
 {
@@ -86,18 +87,30 @@ void Server::acceptClients()
 	std::cout << "New client connected: " << inet_ntoa(client_addr.sin_addr) << std::endl;
 }
 
+std::vector<std::string> splitBuffer(const std::string &buffer)
+{
+	std::vector<std::string> tokens;
+	std::istringstream stream(buffer);
+	std::string token;
+	while(stream >> token)
+	{
+		tokens.push_back(token);
+	}
+	return tokens;
+}
+
 void Server::handleData(size_t &i)
 {
 	char	buffer[1024];
 	ssize_t	bytesRead;
-	Client	client;
 
 	bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
 		std::cout << "Received from client: " << buffer << std::endl;
-		//client.parseData(fds[i].fd, std::string(buffer));
+		std::vector<std::string> tokens = splitBuffer(std::string(buffer));
+		parseData(fds[i].fd, tokens);
 	}
 	else if (bytesRead == 0)
 	{

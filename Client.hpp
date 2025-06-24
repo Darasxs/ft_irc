@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 16:07:35 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/21 17:52:04 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ class Client
 	void operatorPromotion(void);
 	void operatorDemotion(void);
 
-	void 		parseData(int clientFd, const std::string &data);
+	void parseData(int clientFd, const std::string &data);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 16:09:49 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/24 20:45:33 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,3 @@ std::string Client::getRealName(void)
 	return (this->realName);
 }
 
-//void Client::parseData(int clientFd, const std::string &data)
-//{
-//	Client &client = clients[clientFd];
-
-//	if (data.find("KICK") != std::string::npos)
-//	{
-//		if (!client.isOperator)
-//		{
-//			handleKick
-//		}
-//	}
-//}
