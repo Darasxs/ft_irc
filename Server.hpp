@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/27 17:56:12 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:25:11 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ class Server
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
 
-		//void parseData(int fd, const std::vector<std::string> &tokens);
+		void parseData(int fd, Client &client, const std::vector<std::string> &tokens);
 		std::vector<std::string> splitBuffer(const std::string &buffer);
+
+		int handleKick(int clientFd, const std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;

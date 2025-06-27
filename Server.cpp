@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/27 18:01:08 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:07:03 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void Server::handleData(size_t &i)
 		//for (size_t word = 0; word < newBuffer.size(); word++)
 		//{
 		//	std::cout << newBuffer[word] << std::endl;
-		//}`
-		//parseData(fds[i].fd, split_buffer);
+		//}
+		parseData(fds[i].fd, split_buffer);
 	}
 	else if (bytesRead == 0)
 	{
