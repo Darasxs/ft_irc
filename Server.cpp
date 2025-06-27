@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/24 21:36:34 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:01:08 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,15 @@ void Server::acceptClients()
 	std::cout << RESET;
 }
 
-std::vector<std::string> splitBuffer(const std::string &buffer)
+std::vector<std::string> Server::splitBuffer(const std::string &buffer)
 {
 	std::vector<std::string> tokens;
 	std::istringstream stream(buffer);
-	std::string token;
-	while(stream >> token)
+	std::string word;
+	
+	while(stream >> word)
 	{
-		tokens.push_back(token);
+		tokens.push_back(word);
 	}
 	return tokens;
 }
@@ -102,13 +103,22 @@ void Server::handleData(size_t &i)
 {
 	char	buffer[1024];
 	ssize_t	bytesRead;
+	Client	client;
 
 	bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
-		std::cout << "Received from client: " << buffer << std::endl;
-		//client.parseData(fds[i].fd, std::string(buffer));
+		if (buffer[0] == '\n')
+			return ;
+		std::cout << buffer;
+		std::vector newBuffer = splitBuffer(buffer);
+		// LOOP FOR TESTING, BUT I THINK IT WILL ONLY WORK AFTER PROPERLY SENDING A MESSAGE
+		//for (size_t word = 0; word < newBuffer.size(); word++)
+		//{
+		//	std::cout << newBuffer[word] << std::endl;
+		//}`
+		//parseData(fds[i].fd, split_buffer);
 	}
 	else if (bytesRead == 0)
 	{
