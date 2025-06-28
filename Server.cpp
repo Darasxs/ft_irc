@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/27 18:07:03 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/28 17:22:26 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,42 +61,51 @@ void Server::serverInitialization()
 	std::cout << RESET;
 }
 
-void Server::acceptClients()
-{
-	sockaddr_in	client_addr;
-	socklen_t	client_len;
-	Client		newClient;
-	pollfd		clientPollFd;
-	int			clientFd;
-
-	client_len = sizeof(client_addr);
-	clientFd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
-	if (clientFd == -1)
-	{
-		std::cerr << "Failed to accept connection" << std::endl;
-		return ;
-	}
-	newClient.setFd(clientFd);
-	newClient.setIpAddress(inet_ntoa(client_addr.sin_addr));
-	clients[clientFd] = newClient;
-	clientPollFd = {clientFd, POLLIN, 0};
-	fds.push_back(clientPollFd);
-	std::cout << GREEN;
-	std::cout << "New client connection from " << inet_ntoa(client_addr.sin_addr) << std::endl;
-	std::cout << RESET;
-}
-
 std::vector<std::string> Server::splitBuffer(const std::string &buffer)
 {
 	std::vector<std::string> tokens;
 	std::istringstream stream(buffer);
 	std::string word;
-	
+
 	while(stream >> word)
 	{
 		tokens.push_back(word);
 	}
 	return tokens;
+}
+
+void Server::acceptClients()
+{
+	Client						*newClient = new Client();
+	sockaddr_in					client_addr;
+	socklen_t					client_len;
+	pollfd						clientPollFd;
+	int							client_fd;
+
+	client_len = sizeof(client_addr);
+	client_fd = accept(serverFd, (struct sockaddr *)&client_addr, &client_len);
+	if (client_fd == -1)
+	{
+		std::cerr << "Failed to accept connection" << std::endl;
+		return ;
+	}
+	newClient->setFd(client_fd);
+	newClient->set_ip_address(inet_ntoa(client_addr.sin_addr));
+	char host[NI_MAXHOST];
+	if (getnameinfo((struct sockaddr *)&client_addr, client_len, host, sizeof(host), nullptr, 0, 0) == -1)
+	{
+		newClient->sethostname(host);
+	}
+	else
+	{
+		std::cerr << "Failed to retrieve hostname" << std::endl;
+	}
+	clients[client_fd] = newClient;
+	clientPollFd = {client_fd, POLLIN, 0};
+	fds.push_back(clientPollFd);
+	std::cout << GREEN;
+	std::cout << "New client connection from " << inet_ntoa(client_addr.sin_addr) << std::endl;
+	std::cout << RESET;
 }
 
 void Server::handleData(size_t &i)
@@ -113,12 +122,7 @@ void Server::handleData(size_t &i)
 			return ;
 		std::cout << buffer;
 		std::vector newBuffer = splitBuffer(buffer);
-		// LOOP FOR TESTING, BUT I THINK IT WILL ONLY WORK AFTER PROPERLY SENDING A MESSAGE
-		//for (size_t word = 0; word < newBuffer.size(); word++)
-		//{
-		//	std::cout << newBuffer[word] << std::endl;
-		//}
-		parseData(fds[i].fd, split_buffer);
+		//parseData(fds[i].fd, split_buffer);
 	}
 	else if (bytesRead == 0)
 	{
@@ -141,14 +145,13 @@ void Server::handleData(size_t &i)
 void Server::serverStart()
 {
 	pollfd	serverPollFd;
-	int		pollReturn;
+	Client	client;
 
 	serverPollFd = {serverFd, POLLIN, 0};
 	fds.push_back(serverPollFd);
 	while (true)
 	{
-		pollReturn = poll(fds.data(), fds.size(), -1);
-		if (pollReturn == -1)
+		if (poll(fds.data(), fds.size(), -1) == -1)
 			throw std::runtime_error("Error: poll failed");
 		for (size_t i = 0; i < fds.size(); i++)
 		{

@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:24 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/21 17:59:46 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/06/28 14:21:54 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(int ac, char **av)
 			std::cout << "=========== IRC Server created by Pawel and Darek ===========" << std::endl;
 			std::cout << "=============================================================" << std::endl;
 			sleep(1);
-			//main logic here:
 			Server server;
 			server.serverInitialization();
 			server.serverStart();

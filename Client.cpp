@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/24 20:45:33 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/06/28 16:13:53 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(void) : clientFd(-1), nickname(""), realName(""), ipAddress(""),
-	isOperator(false), channels()
+Client::Client(void) : nickname(""), hostname(nullptr), ip_address(""),
+    clientFd(-1), isOperator(false)
 {
 }
 
@@ -28,10 +28,9 @@ Client &Client::operator=(const Client &other)
 	{
 		this->clientFd = other.clientFd;
 		this->nickname = other.nickname;
-		this->realName = other.realName;
-		this->ipAddress = other.ipAddress;
+		this->hostname = other.hostname;
+		this->ip_address = other.ip_address;
 		this->isOperator = other.isOperator;
-		this->channels = other.channels;
 	}
 	return (*this);
 }
@@ -50,9 +49,9 @@ void Client::setFd(int clientFd)
 	this->clientFd = clientFd;
 }
 
-void Client::setIpAddress(std::string ipAddress)
+void Client::set_ip_address(std::string ip_address)
 {
-	this->ipAddress = ipAddress;
+	this->ip_address = ip_address;
 }
 
 void Client::setNickname(std::string &nickname)
@@ -65,13 +64,12 @@ std::string Client::getNickname(void)
 	return (this->nickname);
 }
 
-void Client::setRealName(std::string &realName)
+void Client::sethostname(char *hostname)
 {
-	this->realName = realName;
+	this->hostname = hostname;
 }
 
-std::string Client::getRealName(void)
+char *Client::gethostname(void)
 {
-	return (this->realName);
+	return (this->hostname);
 }
-
