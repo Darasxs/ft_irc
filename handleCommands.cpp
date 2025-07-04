@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/27 18:25:22 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:28:37 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,23 @@ void Server::parseData(int clientFd, const std::vector<std::string> &tokens)
 {
 	if (tokens.empty())
 		return;
-	
+
 	Client &client = clients[clientFd];
 
 	if(tokens[0] == "KICK")
 	{
-		if(!handleKick(clientFd, client, tokens))
-			return;
+		//if(!handleKick(clientFd, client, tokens))
+			//return;
+	}
+	else if(tokens[0] == "")
+	{
+		
 	}
 }
 
 int Server::handleKick(int clientFd, Client &client, const std::vector<std::string> &tokens)
 {
-	if(!client.isOperator)
+	if (!client.isOperator)
 	{
 		std::cerr << "Client " << clientFd << " is not an Operator." << std::endl;
 		std::cerr << "ONLY OPERATORS CAN USE KICK!" << std::endl;
@@ -41,4 +45,13 @@ int Server::handleKick(int clientFd, Client &client, const std::vector<std::stri
 		std::cerr << "KICK requires an argument!" << std::endl;
 		return 0;
 	}
+
+	const std::string &targerNickname = tokens[1];
+
+	
+	else
+	{
+		if(tokens[1] == )
+	}
 }
+

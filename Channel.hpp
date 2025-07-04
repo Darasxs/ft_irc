@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/27 18:25:19 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:29:02 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ class Channel
 
 	std::vector<Client*> getMembers(void) const;
 	std::vector<Client*> getOperators(void) const;
+
+	bool hasMember(const Client &client) const;
+	void removeMember(const Client &client);
 };
 
 #endif
