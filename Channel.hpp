@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/04 13:29:02 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:55:46 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <vector>
+# include <algorithm>
 # include "Client.hpp"
 
 class Channel
@@ -36,11 +37,12 @@ class Channel
 	void setTopic(const std::string &topic);
 
 	void addClient(Client *client);
-	void removeClient(Client *client);	bool isMember(Client *client) const;
+	void removeClient(Client *client);
+	bool isMember(Client *client) const;
 
+	bool isOperator(Client *client) const;
 	void addOperator(Client *client);
 	void removeOperator(Client *client);
-	bool isOperator(Client *client) const;
 
 	void sendMessage(const std::string &message, Client *sender);
 

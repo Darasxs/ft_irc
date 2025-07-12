@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/04 13:28:37 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/12 12:50:47 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,3 @@ int Server::handleKick(int clientFd, Client &client, const std::vector<std::stri
 		if(tokens[1] == )
 	}
 }
-

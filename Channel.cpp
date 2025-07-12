@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/04 13:29:15 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:01:26 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,59 @@ Channel::~Channel(void)
 {
 }
 
-bool Channel::isOperator(const Client &client) const
+bool Channel::isOperator(Client *client) const
 {
-	return operators.find(client.getFd()) != operators.end();
+	if (client == nullptr)
+	{
+		std::cerr << "error: nullptr" << std::endl;
+		return ;
+	}
+	return std::find(operators.begin(), operators.end(), client) != operators.end();
 }
 
+void Channel::addOperator(Client *client)
+{
+	if (client == nullptr)
+	{
+		std::cerr << "error: nullptr" << std::endl;
+		return ;
+	}
+	
+	if (isOperator(client))
+	{
+		std::cerr << "The client is already an operator." << std::endl;
+		return ;
+	}
+	
+	operators.push_back(client);
+	std::cout << "The client has become na operator." << std::endl;
+}
+
+bool Channel::isMember(Client *client) const
+{
+	if (client == nullptr)
+	{
+		std::cerr << "error: nullptr" << std::endl;
+		return ;
+	}
+
+	return std::find(members.begin(), members.end(), client) != members.end();
+}
+
+void Channel::addClient(Client *client)
+{
+	if (client == nullptr)
+	{
+		std::cerr << "error: nullptr" << std::endl;
+		return ;
+	}
+	
+	if (isMember(client))
+	{
+		std::cerr << "The client is already a member of this channel." << std::endl;
+		return ;
+	}
+	
+	members.push_back(client);
+	std::cout << "The client has been added to the channel." << std::endl;
+}
