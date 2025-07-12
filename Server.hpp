@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/28 17:19:19 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:23:38 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,11 @@ class Server
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
 
-		void parseData(int fd, Client &client, const std::vector<std::string> &tokens);
+		void parseData(int fd, Client &client, std::vector<std::string> &tokens);
 		std::vector<std::string> splitBuffer(const std::string &buffer);
 
 		int handleKick(int clientFd, const std::vector<std::string> &tokens);
+		void	handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;

@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/06/28 17:22:26 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:12:42 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void Server::handleData(size_t &i)
 		if (buffer[0] == '\n')
 			return ;
 		std::cout << buffer;
-		std::vector newBuffer = splitBuffer(buffer);
-		//parseData(fds[i].fd, split_buffer);
+		std::vector<std::string> newBuffer = splitBuffer(buffer);
+		parseData(fds[i].fd, &newBuffer);
 	}
 	else if (bytesRead == 0)
 	{
