@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/12 17:23:38 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:54:36 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ class Server
 
 		void		createChannel(const std::string &channelName);
 		void		deleteChannel(const std::string &channelName);
-		Channel		*getChannel(const std::string &channelName);
 
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
@@ -57,6 +56,7 @@ class Server
 
 		int handleKick(int clientFd, const std::vector<std::string> &tokens);
 		void	handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
+		Channel *getChannel(const std::string name);
 
 	private:
 		int								serverFd;

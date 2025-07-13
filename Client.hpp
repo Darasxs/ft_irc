@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/12 16:53:04 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:49:31 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ class Client
 		char						*gethostname(void);
 		void						joinChannel(const std::string &channelName);
 		void						leaveChannel(const std::string &channelName);
-		std::vector<std::string>	getChannels(void);
 		bool						isInChannel(const std::string &channelName);
 		void						sendMessage(const std::string &message);
 		void						operatorPromotion(void);

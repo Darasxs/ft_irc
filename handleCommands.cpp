@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/12 17:37:11 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:28:25 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::s
 		std::cerr << "This channel does not exist!" << std::endl;
 	}
 
-	//Channel *channel = getChannel(tokens[2]);
-    //if (!channel)
-    //{
-    //    std::cerr << "This channel does not exist!" << std::endl;
-    //    return;
-    //}
-	//if (!channel->isMember(&client))
-	//{
-	//	std::cerr << "Client is not a member of the channel!" << std::endl;
-	//	return;
-	//}
-	//std::cout << "Client is a member of the channel. Proceeding with invitation..." << std::endl;
+	Channel *channel = getChannel(tokens[2]);
+	if (!channel)
+	{
+		return;
+}
+	if (!channel->isMember(&client) || !channel->isOperator(&client))
+	{
+		//spraw
+		std::cerr << "Client is not a member of the channel!" << std::endl;
+		return;
+	}
+	std::cout << "Client is a member of the channel. Proceeding with invitation..." << std::endl;
 }
 
 void Server::parseData(int clientFd, std::vector<std::string> &tokens)

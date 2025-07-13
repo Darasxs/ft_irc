@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/12 17:12:42 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:21:12 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void Server::handleData(size_t &i)
 			return ;
 		std::cout << buffer;
 		std::vector<std::string> newBuffer = splitBuffer(buffer);
-		parseData(fds[i].fd, &newBuffer);
+		parseData(fds[i].fd, client, newBuffer);
 	}
 	else if (bytesRead == 0)
 	{
@@ -168,4 +168,16 @@ void Server::serverStart()
 			}
 		}
 	}
+}
+
+Channel *Server::getChannel(const std::string name)
+{
+	std::map<std::string, Channel*>::iterator it = channels.find(name);
+
+	if (it != channels.end())
+	{
+		return it->second;
+	}
+	std::cerr << "Channel with name '" << name << "' not found." << std::endl;
+	return nullptr;
 }
