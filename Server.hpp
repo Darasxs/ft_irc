@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/13 16:52:42 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:41:28 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ class Server
 		void		addClient(Client *client);
 		void		removeClient(Client *client);
 		Client*		getClient(const std::string &nickname);
-		Client*		getClientByNickname(const std::string &nickname);
-		void		sendPrivateMessage(int clientFd, const std::string &message);
 
 		void		createChannel(const std::string &channelName);
 		void		deleteChannel(const std::string &channelName);

@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 16:53:21 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:47:45 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::s
 		std::cerr << "To invite others to a channel, the client must be an operator of this channel!" << std::endl;
 		return;
 	}
-	std::cout << "The target client has now become the member of the channel. Proceeding with invitation..." << std::endl;
+
+	std::cout << "The target client has now become the member of the channel." << std::endl;
 }
 
 void Server::parseData(int clientFd, std::vector<std::string> &tokens)

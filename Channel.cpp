@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 16:52:42 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:57:51 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,4 @@ void Channel::addClient(Client *client)
 
 	members.push_back(client);
 	std::cout << "The client has been added to the channel." << std::endl;
-}
-
-void Channel::addMember(Client *client)
-{
-	if (std::find(members.begin(), members.end(), client) == members.end())
-	{
-		members.push_back(client);
-	}
 }
