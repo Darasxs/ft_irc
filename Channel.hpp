@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/12 16:55:46 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:52:40 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class Channel
 
 	bool hasMember(const Client &client) const;
 	void removeMember(const Client &client);
+	void addMember(Client *client);
 };
 
 #endif

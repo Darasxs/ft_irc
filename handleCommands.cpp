@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 16:41:19 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:53:21 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,21 @@ void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::s
 	{
 		std::cerr << "This channel does not exist!" << std::endl;
 	}
-
 	Channel *channel = getChannel(tokens[2]);
 	if (!channel)
 	{
 		return;
 	}
+	if (std::find(clients.begin(), clients.end(), tokens[1]) != clients.end())
+	{
+		std::cerr << "The target client does not exist!" << std::endl;
+	}
 	if (!channel->isMember(&client) || !channel->isOperator(&client))
 	{
-		//spraw
-		std::cerr << "Client is not a member of the channel!" << std::endl;
+		std::cerr << "To invite others to a channel, the client must be an operator of this channel!" << std::endl;
 		return;
 	}
-	std::cout << "Client is a member of the channel. Proceeding with invitation..." << std::endl;
+	std::cout << "The target client has now become the member of the channel. Proceeding with invitation..." << std::endl;
 }
 
 void Server::parseData(int clientFd, std::vector<std::string> &tokens)

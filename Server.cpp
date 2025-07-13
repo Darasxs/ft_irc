@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 16:21:12 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:52:42 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,4 +180,20 @@ Channel *Server::getChannel(const std::string name)
 	}
 	std::cerr << "Channel with name '" << name << "' not found." << std::endl;
 	return nullptr;
+}
+
+Client* Server::getClientByNickname(const std::string &nickname)
+{
+	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if (it->getNickname() == nickname)
+			return &(*it);
+	}
+	return nullptr;
+}
+
+void Server::sendPrivateMessage(int clientFd, const std::string &message)
+{
+	// Assuming sendMessage is a method to send data to a client
+	sendMessage(clientFd, message);
 }
