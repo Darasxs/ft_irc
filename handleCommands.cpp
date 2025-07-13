@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 16:28:25 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:41:19 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens)
 {
-	if(tokens[1].empty() || tokens[2].empty())
+	if(tokens.size() > 3 || tokens[1].empty() || tokens[2].empty())
 	{
-		std::cerr << "INVITE requires arguments!" << std::endl;
+		std::cerr << "INVITE requires arguments: <nickname>, <channel>" << std::endl;
 	}
 	else if (std::find(clients.begin(), clients.end(), client) != clients.end())
 	{
-		std::cerr << "This client does not exist!" << std::endl;
+		std::cerr << "This operator client does not exist!" << std::endl;
 	}
 	else if (std::find(channels.begin(), channels.end(), tokens[2]) != channels.end())
 	{
@@ -33,7 +33,7 @@ void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::s
 	if (!channel)
 	{
 		return;
-}
+	}
 	if (!channel->isMember(&client) || !channel->isOperator(&client))
 	{
 		//spraw
