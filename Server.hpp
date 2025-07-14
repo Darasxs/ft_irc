@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daras <daras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/13 17:41:28 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:12:23 by daras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class Server
 		void		addClient(Client *client);
 		void		removeClient(Client *client);
 		Client*		getClient(const std::string &nickname);
-
+		
 		void		createChannel(const std::string &channelName);
 		void		deleteChannel(const std::string &channelName);
 
@@ -58,6 +58,8 @@ class Server
 		void	handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
 		Channel *getChannel(const std::string name);
 
+		void sendPrivMsg(int clientFd, const std::string &message);
+		
 	private:
 		int								serverFd;
 		std::map<int, Client*>			clients;

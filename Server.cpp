@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daras <daras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 17:41:25 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:12:49 by daras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,33 @@ void Server::acceptClients()
 	std::cout << RESET;
 }
 
+void Server::sendPrivMsg(int clientFd, const std::string &message)
+{
+	if (message.empty())
+		return;
+
+	ssize_t bytesSent = send(clientFd, message.c_str(), message.size(), 0);
+	if (bytesSent == -1)
+	{
+		std::cerr << "Failed to send prv msg: " << strerror(errno) << std::endl;
+	}
+	else if (static_cast<size_t>(bytesSent) < message.size())
+	{
+		std::cerr << "Partial message sent, only " << bytesSent << " bytes sent." << std::endl;
+	}
+	else
+	{
+		std::cout << "Message sent successfully to client " << clientFd << std::endl;
+	}
+	
+}
+
 void Server::handleData(size_t &i)
 {
-	char	buffer[1024];
 	ssize_t	bytesRead;
-	Client	client;
+	Client	client = clients[fds[i].fd];
+	char*	buffer = client.getBuffer();
+	ssize_t bytesRead;
 
 	bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
 	if (bytesRead > 0)

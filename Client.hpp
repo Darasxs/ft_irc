@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daras <daras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/12 17:49:31 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:12:29 by daras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Client
 		void						operatorPromotion(void);
 		void						operatorDemotion(void);
 		void						parseData(int clientFd, const std::string &data);
+		char*						getBuffer();
 
 	private:
 		std::string					nickname;
@@ -45,6 +46,7 @@ class Client
 		std::string					ip_address;
 		int							clientFd;
 		bool						isOperator;
+		char						buffer[1024];
 };
 
 #endif
