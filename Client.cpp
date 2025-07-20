@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 11:40:36 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:59:26 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void Client::sethostname(char *hostname)
 	this->hostname = hostname;
 }
 
-std::string Client::gethostname(void)
+char	*Client::gethostname(void)
 {
 	return (this->hostname);
 }

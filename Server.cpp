@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 11:43:19 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 13:09:33 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void Server::acceptClients()
 	newClient->setFd(client_fd);
 	newClient->set_ip_address(inet_ntoa(client_addr.sin_addr));
 	char host[NI_MAXHOST];
-	if (getnameinfo((struct sockaddr *)&client_addr, client_len, host, sizeof(host), nullptr, 0, 0) == -1)
+	if (getnameinfo((struct sockaddr *)&client_addr, client_len, host, sizeof(host), nullptr, 0, 0) == 0)
 	{
 		newClient->sethostname(host);
 	}
@@ -128,6 +128,16 @@ void Server::sendPrivMsg(int clientFd, const std::string &message)
 
 }
 
+Client* Server::getClient(const std::string &nickname)
+{
+	for (const auto &pair : clients)
+	{
+		if (pair.second->getNickname() == nickname)
+			return pair.second;
+	}
+	return nullptr;
+}
+
 void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
 	if (tokens.empty())
@@ -146,6 +156,24 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	else if(tokens[0] == "INVITE")
 	{
 		std::cout << "INVITE command would be executed" << std::endl;
+	}
+	else if (tokens[0] == "PRIV")
+	{
+		if (tokens.size() < 3)
+		{
+			std::cerr << "PRIV requires arguments: <nickname> <message>" << std::endl;
+			return;
+		}
+		const std::string &targetNickname = tokens[1];
+		const std::string &message = tokens[2];
+		Client *targetClient = getClient(targetNickname);
+
+		if (!targetClient)
+		{
+			std::cerr << "Nickname not found: " << targetNickname << std::endl;
+			return;
+		}
+		sendPrivMsg(targetClient->getFd(), message);
 	}
 	else if(tokens[0] == "")
 	{
@@ -190,7 +218,6 @@ void Server::handleData(size_t &i)
 void Server::serverStart()
 {
 	pollfd	serverPollFd;
-	Client	client;
 
 	serverPollFd = {serverFd, POLLIN, 0};
 	fds.push_back(serverPollFd);

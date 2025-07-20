@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/20 11:40:33 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 12:54:34 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Client
 		//Getters:
 		int							getFd(void);
 		char						*getBuffer();
-		std::string					gethostname(void);
+		char						*gethostname(void);
 		std::string					getNickname(void);
 		//other variables getters??
 
@@ -48,7 +48,7 @@ class Client
 
 	private:
 		std::string					nickname;
-		std::string					hostname;
+		char						*hostname;
 		std::string					ip_address;
 		int							clientFd;
 		bool						isOperator;
