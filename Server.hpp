@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/20 18:15:57 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:01:12 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Server
 		std::vector<std::string>	splitBuffer(const char *buffer);
 		int							handleKick(int clientFd, const std::vector<std::string> &tokens);
 		void						handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
-		void						sendPrivMsg(int clientFd, const std::string &message);
+		void						sendPrivMsg(int receiverFd, int senderFd, const std::string &message);
 		Client*						getClientFd(const int clientFd);
 
 	private:

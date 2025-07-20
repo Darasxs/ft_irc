@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 18:31:05 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:04:42 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,25 +108,27 @@ void Server::acceptClients()
 	std::cout << RESET;
 }
 
-void Server::sendPrivMsg(int clientFd, const std::string &message)
+void Server::sendPrivMsg(int receiverFd, int senderFd, const std::string &message)
 {
 	if (message.empty())
 		return;
+	Client *senderClient = getClientFd(senderFd);
+	if (!senderClient)
+	{
+		std::cerr << "Sender client not found: " << senderFd << std::endl;
+		return;
+	}
+	std::string formattedMessage = senderClient->getNickname() + ": " + message + "\n";
+	ssize_t bytesSent = send(receiverFd, formattedMessage.c_str(), formattedMessage.size(), 0);
 
-	ssize_t bytesSent = send(clientFd, message.c_str(), message.size(), 0);
 	if (bytesSent == -1)
 	{
 		std::cerr << "Failed to send prv msg: " << strerror(errno) << std::endl;
 	}
-	else if (static_cast<size_t>(bytesSent) < message.size())
+	else if (static_cast<size_t>(bytesSent) < formattedMessage.size())
 	{
 		std::cerr << "Partial message sent, only " << bytesSent << " bytes sent." << std::endl;
 	}
-	else
-	{
-		std::cout << "Message sent successfully to client " << clientFd << std::endl;
-	}
-
 }
 
 Client* Server::getClient(const std::string &nickname)
@@ -175,16 +177,17 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			std::cerr << "PRIV requires arguments: <nickname> <message>" << std::endl;
 			return;
 		}
-		const std::string &targetNickname = tokens[1];
-		const std::string &message = tokens[2];
-		Client *targetClient = getClient(targetNickname);
+		Client *receiverClient = getClient(tokens[1]);
 
-		if (!targetClient)
+		if (!receiverClient)
 		{
-			std::cerr << "Nickname not found: " << targetNickname << std::endl;
+			std::cerr << "Nickname not found: " << tokens[1] << std::endl;
 			return;
 		}
-		sendPrivMsg(targetClient->getFd(), message);
+		int	receiverFd = receiverClient->getFd();
+		Client *senderClient = getClientFd(clientFd);
+		int	senderFd = senderClient->getFd();
+		sendPrivMsg(receiverFd, senderFd, tokens[2]);
 	}
 	else if (tokens[0] == "NICK")
 	{
