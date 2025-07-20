@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 16:57:51 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/20 11:37:25 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) : name(""), topic(""), members(), operators()
+Channel::Channel(void) : name(""), topic(""), members(), operators()	{}
+//client will set these variables only
+//channel cannot be created without a name, topic, members, operators
+
+Channel::Channel(const Channel &other)
 {
+	(void)other;
+	//not finished
 }
 
-Channel::Channel(const std::string &name) : name(name), topic(""), members(),
-	operators()
-{
-}
 
 Channel &Channel::operator=(const Channel &other)
 {
@@ -33,9 +35,7 @@ Channel &Channel::operator=(const Channel &other)
 	return (*this);
 }
 
-Channel::~Channel(void)
-{
-}
+Channel::~Channel(void)	{}
 
 bool Channel::isMember(Client *client) const
 {
@@ -44,7 +44,6 @@ bool Channel::isMember(Client *client) const
 		std::cerr << "error: nullptr" << std::endl;
 		return ;
 	}
-
 	return std::find(members.begin(), members.end(), client) != members.end();
 }
 
@@ -65,13 +64,11 @@ void Channel::addOperator(Client *client)
 		std::cerr << "error: nullptr" << std::endl;
 		return ;
 	}
-
 	if (isOperator(client))
 	{
 		std::cerr << "The client is already an operator." << std::endl;
 		return ;
 	}
-
 	operators.push_back(client);
 	std::cout << "The client has become na operator." << std::endl;
 }
@@ -83,13 +80,11 @@ void Channel::addClient(Client *client)
 		std::cerr << "error: nullptr" << std::endl;
 		return ;
 	}
-
 	if (isMember(client))
 	{
 		std::cerr << "The client is already a member of this channel." << std::endl;
 		return ;
 	}
-
 	members.push_back(client);
 	std::cout << "The client has been added to the channel." << std::endl;
 }

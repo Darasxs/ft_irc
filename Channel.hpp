@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/13 16:57:55 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/20 11:38:19 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,38 @@
 
 class Channel
 {
-  private:
-	std::string name;
-	std::string topic;
-	std::vector<Client*> members;
-	std::vector<Client*> operators;
-  public:
-	Channel(void);
-	Channel(const std::string &name);
-	Channel(const Channel &other);
-	Channel &operator=(const Channel &other);
-	~Channel(void);
+	private:
+		std::string name;
+		std::string topic;
+		std::vector<Client*> members;
+		std::vector<Client*> operators;
 
-	std::string getTopic(void) const;
-	std::string getName(void) const;
-	void setTopic(const std::string &topic);
+	public:
+		Channel(void);
+		Channel(const Channel &other);
+		Channel &operator=(const Channel &other);
+		~Channel(void);
 
-	void addClient(Client *client);
-	void removeClient(Client *client);
-	bool isMember(Client *client) const;
+		//Getters:
+		std::string				getTopic(void) const;
+		std::string				getName(void) const;
+		std::vector<Client*>	getMembers(void) const;
+		std::vector<Client*>	getOperators(void) const;
 
-	bool isOperator(Client *client) const;
-	void addOperator(Client *client);
-	void removeOperator(Client *client);
+		//Setters:
+		void		setTopic(const std::string &topic);
+		//other varaibles setters??
 
-	void sendMessage(const std::string &message, Client *sender);
+		bool isMember(Client *client) const;
+		bool isOperator(Client *client) const;
+		void addClient(Client *client);
+		void removeClient(Client *client);
+		void addOperator(Client *client);
+		void removeOperator(Client *client);
+		bool hasMember(const Client &client) const;
+		void removeMember(const Client &client);
 
-	std::vector<Client*> getMembers(void) const;
-	std::vector<Client*> getOperators(void) const;
-
-	bool hasMember(const Client &client) const;
-	void removeMember(const Client &client);
+		void sendMessage(const std::string &message, Client *sender);
 };
 
 #endif

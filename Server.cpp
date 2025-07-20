@@ -6,12 +6,11 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 11:27:32 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 11:43:19 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-#include <sstream>
 
 Server::Server()	{}
 
@@ -227,4 +226,3 @@ Channel *Server::getChannel(const std::string name)
 	std::cerr << "Channel with name '" << name << "' not found." << std::endl;
 	return nullptr;
 }
-

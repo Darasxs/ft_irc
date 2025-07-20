@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/20 11:20:53 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 11:43:03 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <poll.h>
 # include <unistd.h>
 # include <netdb.h>
+# include <sstream>
 
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -37,28 +38,27 @@ class Server
 		Server &operator=(const Server &other);
 		~Server();
 
-		void		serverInitialization();
-		void		serverStart();
-		void		acceptClients();
-		void		handleData(size_t &i);
-		void		addClient(Client *client);
-		void		removeClient(Client *client);
-		Client*		getClient(const std::string &nickname);
+		//Getters:
+		Client*						getClient(const std::string &nickname);
+		std::string					getPassword();
+		Channel						*getChannel(const std::string name);
 
-		void		createChannel(const std::string &channelName);
-		void		deleteChannel(const std::string &channelName);
+		//Setters:
+		void						setPassword(const std::string &password);
 
-		void		setPassword(const std::string &password);
-		std::string	getPassword();
-
-		void parseData(int fd, Client *client, std::vector<std::string> &tokens);
-		std::vector<std::string> splitBuffer(const std::string &buffer);
-
-		int handleKick(int clientFd, const std::vector<std::string> &tokens);
-		void	handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
-		Channel *getChannel(const std::string name);
-
-		void sendPrivMsg(int clientFd, const std::string &message);
+		void						serverInitialization();
+		void						serverStart();
+		void						acceptClients();
+		void						handleData(size_t &i);
+		void						addClient(Client *client);
+		void						removeClient(Client *client);
+		void						createChannel(const std::string &channelName);
+		void						deleteChannel(const std::string &channelName);
+		void						parseData(int fd, Client *client, std::vector<std::string> &tokens);
+		std::vector<std::string>	splitBuffer(const std::string &buffer);
+		int							handleKick(int clientFd, const std::vector<std::string> &tokens);
+		void						handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
+		void						sendPrivMsg(int clientFd, const std::string &message);
 
 	private:
 		int								serverFd;

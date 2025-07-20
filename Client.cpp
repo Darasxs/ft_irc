@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daras <daras@student.42.fr>                +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/14 23:13:29 by daras            ###   ########.fr       */
+/*   Updated: 2025/07/20 11:40:36 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(void) : nickname(""), hostname(nullptr), ip_address(""),
-    clientFd(-1), isOperator(false)
-{
-}
+Client::Client(void) : nickname(""), hostname(nullptr), ip_address(""), clientFd(-1), isOperator(false)	{}
+//client has to have nickname set
 
 Client::Client(const Client &other)
 {
-	*this = other;
+	(void)other;
+	//not finished
 }
 
 Client &Client::operator=(const Client &other)
@@ -35,9 +34,7 @@ Client &Client::operator=(const Client &other)
 	return (*this);
 }
 
-Client::~Client(void)
-{
-}
+Client::~Client(void)	{}
 
 int Client::getFd(void)
 {
@@ -69,7 +66,7 @@ void Client::sethostname(char *hostname)
 	this->hostname = hostname;
 }
 
-char *Client::gethostname(void)
+std::string Client::gethostname(void)
 {
 	return (this->hostname);
 }
