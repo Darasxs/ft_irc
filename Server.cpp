@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 16:59:28 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:31:05 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void Server::acceptClients()
 	if (getnameinfo((struct sockaddr *)&client_addr, client_len, host, sizeof(host), nullptr, 0, 0) == 0)
 	{
 		newClient->sethostname(host);
+		//std::cout << newClient->gethostname() << std::endl;
 	}
 	else
 	{
@@ -138,6 +139,16 @@ Client* Server::getClient(const std::string &nickname)
 	return nullptr;
 }
 
+Client* Server::getClientFd(const int clientFd)
+{
+	for (std::map<int, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if (it->second->getFd() == clientFd)
+			return it->second;
+	}
+	return nullptr;
+}
+
 void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
 	if (tokens.empty())
@@ -159,7 +170,7 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if (tokens[0] == "PRIV")
 	{
-		if (tokens.size() != 3)
+		if (tokens.size() < 3)
 		{
 			std::cerr << "PRIV requires arguments: <nickname> <message>" << std::endl;
 			return;
@@ -174,6 +185,17 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			return;
 		}
 		sendPrivMsg(targetClient->getFd(), message);
+	}
+	else if (tokens[0] == "NICK")
+	{
+		Client *targetClientFd = getClientFd(clientFd);
+		if (!targetClientFd)
+		{
+			std::cerr << "Client's fd not found: " << targetClientFd << std::endl;
+			return;
+		}
+		targetClientFd->setNickname(tokens[1]);
+		//std::cout << targetClientFd->getNickname() << std::endl;
 	}
 	else if(tokens[0] == "")
 	{
