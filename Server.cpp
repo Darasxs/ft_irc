@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daras <daras@student.42.fr>                +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/14 23:12:49 by daras            ###   ########.fr       */
+/*   Updated: 2025/07/20 11:27:32 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,38 @@ void Server::sendPrivMsg(int clientFd, const std::string &message)
 	{
 		std::cout << "Message sent successfully to client " << clientFd << std::endl;
 	}
-	
+
+}
+
+void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
+{
+	if (tokens.empty())
+		return;
+
+	Client &client = clients[clientFd];
+
+	(void)client;
+
+	if(tokens[0] == "KICK")
+	{
+		//if(!handleKick(clientFd, clients, tokens))
+		//	return;
+		std::cout << "KICK command would be executed" << std::endl;
+	}
+	else if(tokens[0] == "INVITE")
+	{
+		std::cout << "INVITE command would be executed" << std::endl;
+	}
+	else if(tokens[0] == "")
+	{
+		std::cout << "No command" << std::endl;
+	}
 }
 
 void Server::handleData(size_t &i)
 {
-	ssize_t	bytesRead;
-	Client	client = clients[fds[i].fd];
-	char*	buffer = client.getBuffer();
+	Client	*client = clients[fds[i].fd];
+	char*	buffer = client->getBuffer();
 	ssize_t bytesRead;
 
 	bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
@@ -142,7 +166,7 @@ void Server::handleData(size_t &i)
 		buffer[bytesRead] = '\0';
 		if (buffer[0] == '\n')
 			return ;
-		std::cout << buffer;
+		//std::cout << buffer; //uncomment for testing
 		std::vector<std::string> newBuffer = splitBuffer(buffer);
 		parseData(fds[i].fd, client, newBuffer);
 	}

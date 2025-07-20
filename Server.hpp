@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daras <daras@student.42.fr>                +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/14 23:12:23 by daras            ###   ########.fr       */
+/*   Updated: 2025/07/20 11:20:53 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ class Server
 		void		addClient(Client *client);
 		void		removeClient(Client *client);
 		Client*		getClient(const std::string &nickname);
-		
+
 		void		createChannel(const std::string &channelName);
 		void		deleteChannel(const std::string &channelName);
 
 		void		setPassword(const std::string &password);
 		std::string	getPassword();
 
-		void parseData(int fd, Client &client, std::vector<std::string> &tokens);
+		void parseData(int fd, Client *client, std::vector<std::string> &tokens);
 		std::vector<std::string> splitBuffer(const std::string &buffer);
 
 		int handleKick(int clientFd, const std::vector<std::string> &tokens);
@@ -59,7 +59,7 @@ class Server
 		Channel *getChannel(const std::string name);
 
 		void sendPrivMsg(int clientFd, const std::string &message);
-		
+
 	private:
 		int								serverFd;
 		std::map<int, Client*>			clients;

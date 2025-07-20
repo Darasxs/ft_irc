@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/13 17:47:45 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/20 11:23:13 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,28 +44,6 @@ void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::s
 	}
 
 	std::cout << "The target client has now become the member of the channel." << std::endl;
-}
-
-void Server::parseData(int clientFd, std::vector<std::string> &tokens)
-{
-	if (tokens.empty())
-		return;
-
-	Client &client = clients[clientFd];
-
-	if(tokens[0] == "KICK")
-	{
-		if(!handleKick(clientFd, client, tokens))
-			return;
-	}
-	else if(tokens[0] == "INVITE")
-	{
-
-	}
-	else if(tokens[0] == "")
-	{
-
-	}
 }
 
 int Server::handleKick(int clientFd, Client &client, const std::vector<std::string> &tokens)
