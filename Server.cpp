@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 13:09:33 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 16:59:28 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ void Server::serverInitialization()
 	std::cout << RESET;
 }
 
-std::vector<std::string> Server::splitBuffer(const std::string &buffer)
+std::vector<std::string> Server::splitBuffer(const char *buffer)
 {
 	std::vector<std::string> tokens;
 	std::istringstream stream(buffer);
 	std::string word;
 
-	while(stream >> word)
+	while (stream >> word)
 	{
 		tokens.push_back(word);
 	}
@@ -130,10 +130,10 @@ void Server::sendPrivMsg(int clientFd, const std::string &message)
 
 Client* Server::getClient(const std::string &nickname)
 {
-	for (const auto &pair : clients)
+	for (std::map<int, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if (pair.second->getNickname() == nickname)
-			return pair.second;
+		if (it->second->getNickname() == nickname)
+			return it->second;
 	}
 	return nullptr;
 }
@@ -159,7 +159,7 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if (tokens[0] == "PRIV")
 	{
-		if (tokens.size() < 3)
+		if (tokens.size() != 3)
 		{
 			std::cerr << "PRIV requires arguments: <nickname> <message>" << std::endl;
 			return;
@@ -187,13 +187,12 @@ void Server::handleData(size_t &i)
 	char*	buffer = client->getBuffer();
 	ssize_t bytesRead;
 
-	bytesRead = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
+	bytesRead = recv(fds[i].fd, buffer, 1024, 0);
 	if (bytesRead > 0)
 	{
 		buffer[bytesRead] = '\0';
 		if (buffer[0] == '\n')
 			return ;
-		//std::cout << buffer; //uncomment for testing
 		std::vector<std::string> newBuffer = splitBuffer(buffer);
 		parseData(fds[i].fd, client, newBuffer);
 	}

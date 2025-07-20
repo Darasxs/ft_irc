@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/20 11:43:03 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/20 15:44:20 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ class Server
 		void						createChannel(const std::string &channelName);
 		void						deleteChannel(const std::string &channelName);
 		void						parseData(int fd, Client *client, std::vector<std::string> &tokens);
-		std::vector<std::string>	splitBuffer(const std::string &buffer);
+		std::vector<std::string>	splitBuffer(const char *buffer);
 		int							handleKick(int clientFd, const std::vector<std::string> &tokens);
 		void						handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
 		void						sendPrivMsg(int clientFd, const std::string &message);
