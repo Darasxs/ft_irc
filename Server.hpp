@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/20 20:01:12 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:09:32 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ class Server
 		void						handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
 		void						sendPrivMsg(int receiverFd, int senderFd, const std::string &message);
 		Client*						getClientFd(const int clientFd);
+		std::string					concatenateTokens(std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;

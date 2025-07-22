@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 20:04:42 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:33:17 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,17 @@ Client* Server::getClientFd(const int clientFd)
 	return nullptr;
 }
 
+std::string Server::concatenateTokens(std::vector<std::string> &tokens)
+{
+	std::string	concatenatedTokens;
+	for (size_t i = 2; i < tokens.size(); i++)
+	{
+		concatenatedTokens += tokens[i];
+		concatenatedTokens += " ";
+	}
+	return concatenatedTokens;
+}
+
 void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
 	if (tokens.empty())
@@ -187,7 +198,8 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 		int	receiverFd = receiverClient->getFd();
 		Client *senderClient = getClientFd(clientFd);
 		int	senderFd = senderClient->getFd();
-		sendPrivMsg(receiverFd, senderFd, tokens[2]);
+		std::string message = concatenateTokens(tokens);
+		sendPrivMsg(receiverFd, senderFd, message);
 	}
 	else if (tokens[0] == "NICK")
 	{
