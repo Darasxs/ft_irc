@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/22 18:33:17 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/24 12:24:49 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,23 @@ void Server::acceptClients()
 	std::cout << GREEN;
 	std::cout << "New client connection from " << inet_ntoa(client_addr.sin_addr) << std::endl;
 	std::cout << RESET;
+	sendMsg(client_fd, "\nUse HELP command if you don't know howt to proceed.\n\n");
+}
+
+void Server::sendMsg(int receiverFd, const std::string &message)
+{
+	if (message.empty())
+		return;
+	ssize_t bytesSent = send(receiverFd, message.c_str(), message.size(), 0);
+
+	if (bytesSent == -1)
+	{
+		std::cerr << "Failed to send msg: " << strerror(errno) << std::endl;
+	}
+	else if (static_cast<size_t>(bytesSent) < message.size())
+	{
+		std::cerr << "Partial message sent, only " << bytesSent << " bytes sent." << std::endl;
+	}
 }
 
 void Server::sendPrivMsg(int receiverFd, int senderFd, const std::string &message)
