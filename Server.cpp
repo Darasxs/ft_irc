@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/24 12:24:49 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 14:12:09 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void Server::acceptClients()
 	std::cout << GREEN;
 	std::cout << "New client connection from " << inet_ntoa(client_addr.sin_addr) << std::endl;
 	std::cout << RESET;
-	sendMsg(client_fd, "\nUse HELP command if you don't know howt to proceed.\n\n");
+	sendMsg(client_fd, "\nWelcome!\nUse HELP command if you don't know howt to proceed.\n\n");
 }
 
 void Server::sendMsg(int receiverFd, const std::string &message)
@@ -198,11 +198,11 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	{
 		std::cout << "INVITE command would be executed" << std::endl;
 	}
-	else if (tokens[0] == "PRIV")
+	else if (tokens[0] == "PRIVMSG")
 	{
 		if (tokens.size() < 3)
 		{
-			std::cerr << "PRIV requires arguments: <nickname> <message>" << std::endl;
+			std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
 			return;
 		}
 		Client *receiverClient = getClient(tokens[1]);
@@ -213,10 +213,10 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			return;
 		}
 		int	receiverFd = receiverClient->getFd();
-		Client *senderClient = getClientFd(clientFd);
-		int	senderFd = senderClient->getFd();
+		//Client *senderClient = getClientFd(clientFd);
+		//int	senderFd = senderClient->getFd();
 		std::string message = concatenateTokens(tokens);
-		sendPrivMsg(receiverFd, senderFd, message);
+		sendPrivMsg(receiverFd, clientFd, message);
 	}
 	else if (tokens[0] == "NICK")
 	{
@@ -227,7 +227,25 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			return;
 		}
 		targetClientFd->setNickname(tokens[1]);
+		std::string ackMessage = "Welcome to the IRC server ";
+		ackMessage += tokens[1];
+		ackMessage += "!\n";
+		sendMsg(clientFd, ackMessage);
 		//std::cout << targetClientFd->getNickname() << std::endl;
+	}
+	else if (tokens[0] == "HELP")
+	{
+		std::string helpMessage = 
+			"\nALL COMMANDS:\n\n"
+			"\tTHE FOLLOWING COMMANDS YOU NEED TO USE AFTER CONNECTING FOR THE FIRST TIME\n"
+			"\tNICK <nickname> - set a nickname, visible for other users\n"
+			"\tUSER <username> - set a username, used only for server authentication\n\n"
+			"\tOTHER AVAILABLE COMMANDS:\n"
+			"\tJOIN <channel> - join a specific channel\n"
+			"\tPRIVMSG <nickname/channel> <message> - send a private message\n"
+			"\tQUIT - disconnect from the server\n";
+			
+		sendMsg(clientFd, helpMessage);
 	}
 	else if(tokens[0] == "")
 	{
