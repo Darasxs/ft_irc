@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 17:00:44 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:18:19 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,11 +247,16 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 				sendMsg(clientFd, "The Nickname can be only changed once every 7 days.\n");
 				time_t sevenDays = 7 * 24 * 60 * 60;
 				time_t timeLeft = sevenDays - secondsSinceLastChange;
+				time_t timeLeftSeconds = timeLeft % (24 * 60 * 60);
+				time_t timeLeftHours = timeLeftSeconds / (60 * 60);
 				time_t timeLeftDays = timeLeft / (24 * 60 * 60);
-				std::string timeLeftString = std::to_string(timeLeftDays);
+				std::string timeLeftHoursString = std::to_string(timeLeftHours);
+				std::string timeLeftDaysString = std::to_string(timeLeftDays);
 				std::string timeLeftMsg = "The next available change for you is in ";
-				timeLeftMsg += timeLeftString;
-				timeLeftMsg += "days.\n";
+				timeLeftMsg += timeLeftDaysString;
+				timeLeftMsg += " days, ";
+				timeLeftMsg += timeLeftHoursString;
+				timeLeftMsg += " hours!\n";
 				sendMsg(clientFd, timeLeftMsg);
 				return ;
 			}

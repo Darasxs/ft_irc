@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/25 16:20:40 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:13:12 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ class Client
 		std::string					getNickname(void);
 		std::string					getUsername(void);
 		time_t						getLastNicknameChange(void);
-		//other variables getters??
 
 		//Setters:
 		void 						setFd(int clientFd);
