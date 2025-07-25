@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/25 14:12:56 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 14:15:30 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Client
 		char						*getBuffer();
 		char						*gethostname(void);
 		std::string					getNickname(void);
+		std::string					getUsername(void);
 		//other variables getters??
 
 		//Setters:
@@ -36,6 +37,7 @@ class Client
 		void						set_ip_address(std::string ip_address);
 		void						setNickname(std::string &nickname);
 		void						sethostname(char *hostname);
+		void						setUsername(std::string &username);
 		//other variables setters??
 
 		void						joinChannel(const std::string &channelName);
@@ -48,6 +50,7 @@ class Client
 
 	private:
 		std::string					nickname;
+		std::string					username;
 		char						*hostname;
 		std::string					ip_address;
 		int							clientFd;

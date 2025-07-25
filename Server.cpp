@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 14:12:09 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 14:28:40 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,18 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 		ackMessage += "!\n";
 		sendMsg(clientFd, ackMessage);
 		//std::cout << targetClientFd->getNickname() << std::endl;
+	}
+	else if (tokens[0] == "USER")
+	{
+		Client *targetClientFd = getClientFd(clientFd);
+		if (!targetClientFd)
+		{
+			std::cerr << "Client's fd not found: " << targetClientFd << std::endl;
+			return;
+		}
+		targetClientFd->setUsername(tokens[1]);
+		std::string ackMessage = "The username has been set!\n";
+		sendMsg(clientFd, ackMessage);
 	}
 	else if (tokens[0] == "HELP")
 	{

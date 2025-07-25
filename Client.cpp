@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 18:18:48 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 14:17:43 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,16 @@ void Client::setNickname(std::string &nickname)
 std::string Client::getNickname(void)
 {
 	return (this->nickname);
+}
+
+void Client::setUsername(std::string &username)
+{
+	this->username = username;
+}
+
+std::string Client::getUsername(void)
+{
+	return (this->username);
 }
 
 void Client::sethostname(char *hostname)
