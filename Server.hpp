@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/25 13:39:06 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:29:46 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class Server
 		void						sendMsg(int receiverfD, const std::string &message);
 		Client*						getClientFd(const int clientFd);
 		std::string					concatenateTokens(std::vector<std::string> &tokens);
-
+		bool						checkNickname(std::string &nickname);
 
 	private:
 		int								serverFd;

@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/25 14:15:30 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:20:40 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <vector>
+# include <ctime>
 
 class Client
 {
@@ -30,6 +31,7 @@ class Client
 		char						*gethostname(void);
 		std::string					getNickname(void);
 		std::string					getUsername(void);
+		time_t						getLastNicknameChange(void);
 		//other variables getters??
 
 		//Setters:
@@ -38,6 +40,7 @@ class Client
 		void						setNickname(std::string &nickname);
 		void						sethostname(char *hostname);
 		void						setUsername(std::string &username);
+		void						setLastNicknameChange(time_t nicknameChange);
 		//other variables setters??
 
 		void						joinChannel(const std::string &channelName);
@@ -56,6 +59,7 @@ class Client
 		int							clientFd;
 		bool						isOperator;
 		char						buffer[1024];
+		time_t						lastNicknameChange;
 };
 
 #endif

@@ -6,14 +6,13 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 14:17:43 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:22:30 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(void) : nickname(""), hostname(nullptr), ip_address(""), clientFd(-1), isOperator(false)	{}
-//client has to have nickname set
+Client::Client(void) : nickname(""), hostname(nullptr), ip_address(""), clientFd(-1), isOperator(false), lastNicknameChange(0) {}
 
 Client::Client(const Client &other)
 {
@@ -84,4 +83,14 @@ char	*Client::gethostname(void)
 char* Client::getBuffer()
 {
 	return buffer;
+}
+
+void	Client::setLastNicknameChange(time_t nicknameChange)
+{
+	this->lastNicknameChange = nicknameChange;
+}
+
+time_t	Client::getLastNicknameChange(void)
+{
+	return (this->lastNicknameChange);
 }

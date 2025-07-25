@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 14:28:40 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:00:44 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,18 @@ std::string Server::concatenateTokens(std::vector<std::string> &tokens)
 	return concatenatedTokens;
 }
 
-void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
+bool	Server::checkNickname(std::string &nickname)
+{
+	for (std::map<int, Client*>::const_iterator it = clients.begin(); it != clients.end(); it++)
+	{
+		if (it->second->getNickname() == nickname)
+		{
+			return (false);
+		}
+	}
+	return (true);
+}
+void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
 	if (tokens.empty())
 		return;
@@ -226,11 +237,39 @@ void Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			std::cerr << "Client's fd not found: " << targetClientFd << std::endl;
 			return;
 		}
-		targetClientFd->setNickname(tokens[1]);
-		std::string ackMessage = "Welcome to the IRC server ";
-		ackMessage += tokens[1];
-		ackMessage += "!\n";
-		sendMsg(clientFd, ackMessage);
+
+		time_t	currentTime = time(nullptr);
+		if (targetClientFd->getLastNicknameChange() != 0)
+		{
+			double secondsSinceLastChange = difftime(currentTime, targetClientFd->getLastNicknameChange());
+			if(secondsSinceLastChange < 7 * 24 * 60 * 60) // 7 dni
+			{
+				sendMsg(clientFd, "The Nickname can be only changed once every 7 days.\n");
+				time_t sevenDays = 7 * 24 * 60 * 60;
+				time_t timeLeft = sevenDays - secondsSinceLastChange;
+				time_t timeLeftDays = timeLeft / (24 * 60 * 60);
+				std::string timeLeftString = std::to_string(timeLeftDays);
+				std::string timeLeftMsg = "The next available change for you is in ";
+				timeLeftMsg += timeLeftString;
+				timeLeftMsg += "days.\n";
+				sendMsg(clientFd, timeLeftMsg);
+				return ;
+			}
+		}
+
+		if (checkNickname(tokens[1]))
+		{
+			targetClientFd->setNickname(tokens[1]);
+			targetClientFd->setLastNicknameChange(currentTime);
+			std::string ackMessage = "Welcome to the IRC server ";
+			ackMessage += tokens[1];
+			ackMessage += "!\n";
+			sendMsg(clientFd, ackMessage);
+		}
+		else
+		{
+			sendMsg(clientFd, "The Nickname is already in use. Please use a different one!\n");
+		}
 		//std::cout << targetClientFd->getNickname() << std::endl;
 	}
 	else if (tokens[0] == "USER")
