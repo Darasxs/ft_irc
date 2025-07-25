@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 17:18:19 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:48:13 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,12 +237,11 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			std::cerr << "Client's fd not found: " << targetClientFd << std::endl;
 			return;
 		}
-
 		time_t	currentTime = time(nullptr);
 		if (targetClientFd->getLastNicknameChange() != 0)
 		{
 			double secondsSinceLastChange = difftime(currentTime, targetClientFd->getLastNicknameChange());
-			if(secondsSinceLastChange < 7 * 24 * 60 * 60) // 7 dni
+			if (secondsSinceLastChange < 7 * 24 * 60 * 60) // 7 dni
 			{
 				sendMsg(clientFd, "The Nickname can be only changed once every 7 days.\n");
 				time_t sevenDays = 7 * 24 * 60 * 60;
@@ -291,14 +290,24 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if (tokens[0] == "HELP")
 	{
-		std::string helpMessage = 
+		std::string helpMessage =
+			"\nALL Commands have to be written exactly like below, in UPPERCASE letters format.\n" 
 			"\nALL COMMANDS:\n\n"
 			"\tTHE FOLLOWING COMMANDS YOU NEED TO USE AFTER CONNECTING FOR THE FIRST TIME\n"
-			"\tNICK <nickname> - set a nickname, visible for other users\n"
+			"\tNICK <nickname> - set a nickname, visible for other users. Nickname can be changed only once every 7 days.\n"
 			"\tUSER <username> - set a username, used only for server authentication\n\n"
 			"\tOTHER AVAILABLE COMMANDS:\n"
-			"\tJOIN <channel> - join a specific channel\n"
 			"\tPRIVMSG <nickname/channel> <message> - send a private message\n"
+			"\tKICK <username> - eject a client from the channel\n"
+			"\tINVITE <username> - invite a client to a channel\n"
+			"\tTOPIC - change or view the channel topic\n"
+			"\tMODE - change the channel's mode\n"
+			"\t\t i: Set/remove Invite-only channel\n"
+			"\t\t t: Set/remove the restrictions of the TOPIC \n"
+			"\t\t k: Set/remove the channel key (password)\n"
+			"\t\t o: Give/take channel operator privilege\n"
+			"\t\t l: Set/remove the user limit to channel\n"
+			"\tJOIN <channel> - join a specific channel\n"
 			"\tQUIT - disconnect from the server\n";
 			
 		sendMsg(clientFd, helpMessage);
