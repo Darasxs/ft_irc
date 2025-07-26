@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/26 14:22:04 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:30:15 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ class Server
 
 		//Commands:
 		void						handleHelp(int clientFd);
-		void						handleNick(int clientFd, Client *clients, std::vector<std::string> &tokens);
-		void						handlePrivmsg(int clientFd, Client *clients, std::vector<std::string> &tokens);
-		void						handleUser(int clientFd, Client *clients, std::vector<std::string> &tokens);
-		void						handleJoin(int clientFd, Client *clients, std::vector<std::string> &tokens);
+		void						handleNick(int clientFd, std::vector<std::string> &tokens);
+		void						handlePrivmsg(int clientFd, std::vector<std::string> &tokens);
+		void						handleUser(int clientFd, std::vector<std::string> &tokens);
+		void						handleJoin(int clientFd, std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;

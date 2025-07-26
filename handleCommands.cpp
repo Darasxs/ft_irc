@@ -6,13 +6,13 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 14:20:26 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:29:57 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void	Server::handleJoin(int clientFd, Client *clients, std::vector<std::string> &tokens)
+void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 {
 	if (tokens.size() < 2)
 	{
@@ -51,7 +51,7 @@ void	Server::handleJoin(int clientFd, Client *clients, std::vector<std::string> 
 	sendMsg(clientFd, "You have joined " + channelName + "\n");
 }
 
-void	Server::handleUser(int clientFd, Client *clients, std::vector<std::string> &tokens)
+void	Server::handleUser(int clientFd, std::vector<std::string> &tokens)
 {
 	Client *targetClientFd = getClientFd(clientFd);
 	if (!targetClientFd)
@@ -64,7 +64,7 @@ void	Server::handleUser(int clientFd, Client *clients, std::vector<std::string> 
 	sendMsg(clientFd, ackMessage);
 }
 
-void	Server::handlePrivmsg(int clientFd, Client *clients, std::vector<std::string> &tokens)
+void	Server::handlePrivmsg(int clientFd, std::vector<std::string> &tokens)
 {
 	if (tokens.size() < 3)
 		{
@@ -85,7 +85,7 @@ void	Server::handlePrivmsg(int clientFd, Client *clients, std::vector<std::strin
 		sendPrivMsg(receiverFd, clientFd, message);
 }
 
-void	Server::handleNick(int clientFd, Client *clients, std::vector<std::string> &tokens)
+void	Server::handleNick(int clientFd, std::vector<std::string> &tokens)
 {
 	Client *targetClientFd = getClientFd(clientFd);
 	if (!targetClientFd)

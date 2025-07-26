@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 14:21:00 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:30:45 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,9 @@ bool	Server::checkNickname(std::string &nickname)
 }
 void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
+	(void)clients;
 	if (tokens.empty())
 		return;
-	Client &client = clients[clientFd];
 	if(tokens[0] == "KICK")
 	{
 		//handleKick(clientFd, clients, tokens);
@@ -206,15 +206,15 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if (tokens[0] == "PRIVMSG")
 	{
-		handlePrivmsg(clientFd, clients, tokens);
+		handlePrivmsg(clientFd, tokens);
 	}
 	else if (tokens[0] == "NICK")
 	{
-		handleNick(clientFd, clients, tokens);
+		handleNick(clientFd, tokens);
 	}
 	else if (tokens[0] == "USER")
 	{
-		handleUser(clientFd, clients, tokens);
+		handleUser(clientFd, tokens);
 	}
 	else if (tokens[0] == "HELP")
 	{
@@ -222,7 +222,7 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if(tokens[0] == "JOIN")
 	{
-		handleJoin(clientFd, clients, tokens);
+		handleJoin(clientFd, tokens);
 	}
 }
 
