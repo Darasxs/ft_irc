@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 14:30:45 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:02:47 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ bool	Server::checkNickname(std::string &nickname)
 	}
 	return (true);
 }
+
 void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
 	(void)clients;
@@ -284,16 +285,4 @@ void Server::serverStart()
 			}
 		}
 	}
-}
-
-Channel *Server::getChannel(const std::string name)
-{
-	std::map<std::string, Channel*>::iterator it = channels.find(name);
-
-	if (it != channels.end())
-	{
-		return it->second;
-	}
-	std::cerr << "Channel with name '" << name << "' not found." << std::endl;
-	return nullptr;
 }

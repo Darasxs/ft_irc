@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 15:01:09 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:06:43 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,29 +64,47 @@ void	Server::handleUser(int clientFd, std::vector<std::string> &tokens)
 	sendMsg(clientFd, ackMessage);
 }
 
+void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
+{
+	for (std::map<std::string, Channel*>::const_iterator it = channels.begin(); it != channels.end(); it++)
+	{
+		if (it->second->getName() == tokens[1])
+		{
+			sendMsg(clientFd, "Correct!\n");
+			return ;
+		}
+	}
+	sendMsg(clientFd, "Channel must exist, in order to send message to it!\n");
+}
+
 void	Server::handlePrivmsg(int clientFd, std::vector<std::string> &tokens)
 {
 	if (tokens.size() < 3)
-		{
-			std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
-			return;
-		}
-		Client *receiverClient = getClient(tokens[1]);
+	{
+		std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
+		return;
+	}
+	if (tokens[1][0] == '#')
+	{
+		handleChannelmsg(clientFd, tokens);
+		return;
+	}
+	Client *receiverClient = getClient(tokens[1]);
 
-		if (!receiverClient)
-		{
-			std::cerr << "Nickname not found: " << tokens[1] << std::endl;
-			return;
-		}
-		int	receiverFd = receiverClient->getFd();
-		Client *senderClient = getClientFd(clientFd);
-		std::string message = concatenateTokens(tokens);
-		if(senderClient->getNickname().empty())
-		{
-			sendMsg(clientFd, "The nickname must be set in order to send messages!\n");
-			return;
-		}
-		sendPrivMsg(receiverFd, clientFd, message);
+	if (!receiverClient)
+	{
+		std::cerr << "Nickname not found: " << tokens[1] << std::endl;
+		return;
+	}
+	int	receiverFd = receiverClient->getFd();
+	Client *senderClient = getClientFd(clientFd);
+	std::string message = concatenateTokens(tokens);
+	if(senderClient->getNickname().empty())
+	{
+		sendMsg(clientFd, "The nickname must be set in order to send messages!\n");
+		return;
+	}
+	sendPrivMsg(receiverFd, clientFd, message);
 }
 
 void	Server::handleNick(int clientFd, std::vector<std::string> &tokens)
@@ -120,8 +138,11 @@ void	Server::handleNick(int clientFd, std::vector<std::string> &tokens)
 			return ;
 		}
 	}
-
-	if (checkNickname(tokens[1]))
+	if (tokens[1][0] == '#')
+	{
+		sendMsg(clientFd, "Nickname cannot start with '#'!\n");
+	}
+	else if (checkNickname(tokens[1]))
 	{
 		targetClientFd->setNickname(tokens[1]);
 		targetClientFd->setLastNicknameChange(currentTime);

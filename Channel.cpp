@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 12:01:22 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:05:11 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,9 @@ void Channel::addClient(Client *client)
 	}
 	members.push_back(client);
 	std::cout << "The client has been added to the channel." << std::endl;
+}
+
+std::string Channel::getName(void) const
+{
+	return (this->name);
 }
