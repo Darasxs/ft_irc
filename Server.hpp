@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/25 15:29:46 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:22:04 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,13 @@ class Server
 		Client*						getClientFd(const int clientFd);
 		std::string					concatenateTokens(std::vector<std::string> &tokens);
 		bool						checkNickname(std::string &nickname);
+
+		//Commands:
+		void						handleHelp(int clientFd);
+		void						handleNick(int clientFd, Client *clients, std::vector<std::string> &tokens);
+		void						handlePrivmsg(int clientFd, Client *clients, std::vector<std::string> &tokens);
+		void						handleUser(int clientFd, Client *clients, std::vector<std::string> &tokens);
+		void						handleJoin(int clientFd, Client *clients, std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;

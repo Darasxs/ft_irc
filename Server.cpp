@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 12:02:16 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:21:00 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,15 +194,10 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 {
 	if (tokens.empty())
 		return;
-
 	Client &client = clients[clientFd];
-
-	(void)client;
-
 	if(tokens[0] == "KICK")
 	{
-		//if(!handleKick(clientFd, clients, tokens))
-		//	return;
+		//handleKick(clientFd, clients, tokens);
 		std::cout << "KICK command would be executed" << std::endl;
 	}
 	else if(tokens[0] == "INVITE")
@@ -211,144 +206,23 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if (tokens[0] == "PRIVMSG")
 	{
-		if (tokens.size() < 3)
-		{
-			std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
-			return;
-		}
-		Client *receiverClient = getClient(tokens[1]);
-
-		if (!receiverClient)
-		{
-			std::cerr << "Nickname not found: " << tokens[1] << std::endl;
-			return;
-		}
-		int	receiverFd = receiverClient->getFd();
-		//Client *senderClient = getClientFd(clientFd);
-		//int	senderFd = senderClient->getFd();
-		std::string message = concatenateTokens(tokens);
-		sendPrivMsg(receiverFd, clientFd, message);
+		handlePrivmsg(clientFd, clients, tokens);
 	}
 	else if (tokens[0] == "NICK")
 	{
-		Client *targetClientFd = getClientFd(clientFd);
-		if (!targetClientFd)
-		{
-			std::cerr << "Client's fd not found: " << targetClientFd << std::endl;
-			return;
-		}
-		time_t	currentTime = time(nullptr);
-		if (targetClientFd->getLastNicknameChange() != 0)
-		{
-			double secondsSinceLastChange = difftime(currentTime, targetClientFd->getLastNicknameChange());
-			if (secondsSinceLastChange < 7 * 24 * 60 * 60) // 7 dni
-			{
-				sendMsg(clientFd, "The Nickname can be only changed once every 7 days.\n");
-				time_t sevenDays = 7 * 24 * 60 * 60;
-				time_t timeLeft = sevenDays - secondsSinceLastChange;
-				time_t timeLeftSeconds = timeLeft % (24 * 60 * 60);
-				time_t timeLeftHours = timeLeftSeconds / (60 * 60);
-				time_t timeLeftDays = timeLeft / (24 * 60 * 60);
-				std::string timeLeftHoursString = std::to_string(timeLeftHours);
-				std::string timeLeftDaysString = std::to_string(timeLeftDays);
-				std::string timeLeftMsg = "The next available change for you is in ";
-				timeLeftMsg += timeLeftDaysString;
-				timeLeftMsg += " days, ";
-				timeLeftMsg += timeLeftHoursString;
-				timeLeftMsg += " hours!\n";
-				sendMsg(clientFd, timeLeftMsg);
-				return ;
-			}
-		}
-
-		if (checkNickname(tokens[1]))
-		{
-			targetClientFd->setNickname(tokens[1]);
-			targetClientFd->setLastNicknameChange(currentTime);
-			std::string ackMessage = "Welcome to the IRC server ";
-			ackMessage += tokens[1];
-			ackMessage += "!\n";
-			sendMsg(clientFd, ackMessage);
-		}
-		else
-		{
-			sendMsg(clientFd, "The Nickname is already in use. Please use a different one!\n");
-		}
-		//std::cout << targetClientFd->getNickname() << std::endl;
+		handleNick(clientFd, clients, tokens);
 	}
 	else if (tokens[0] == "USER")
 	{
-		Client *targetClientFd = getClientFd(clientFd);
-		if (!targetClientFd)
-		{
-			std::cerr << "Client's fd not found: " << targetClientFd << std::endl;
-			return;
-		}
-		targetClientFd->setUsername(tokens[1]);
-		std::string ackMessage = "The username has been set!\n";
-		sendMsg(clientFd, ackMessage);
+		handleUser(clientFd, clients, tokens);
 	}
 	else if (tokens[0] == "HELP")
 	{
-		std::string helpMessage =
-			"\nALL Commands have to be written exactly like below, in UPPERCASE letters format.\n"
-			"\nALL COMMANDS:\n\n"
-			"\tTHE FOLLOWING COMMANDS YOU NEED TO USE AFTER CONNECTING FOR THE FIRST TIME\n"
-			"\tNICK <nickname> - set a nickname, visible for other users. Nickname can be changed only once every 7 days.\n"
-			"\tUSER <username> - set a username, used only for server authentication\n\n"
-			"\tOTHER AVAILABLE COMMANDS:\n"
-			"\tPRIVMSG <nickname/channel> <message> - send a private message\n"
-			"\tKICK <username> - eject a client from the channel\n"
-			"\tINVITE <username> - invite a client to a channel\n"
-			"\tTOPIC - change or view the channel topic\n"
-			"\tMODE - change the channel's mode\n"
-			"\t\t i: Set/remove Invite-only channel\n"
-			"\t\t t: Set/remove the restrictions of the TOPIC \n"
-			"\t\t k: Set/remove the channel key (password)\n"
-			"\t\t o: Give/take channel operator privilege\n"
-			"\t\t l: Set/remove the user limit to channel\n"
-			"\tJOIN <channel> - join a specific channel\n"
-			"\tQUIT - disconnect from the server\n";
-
-		sendMsg(clientFd, helpMessage);
+		handleHelp(clientFd);
 	}
 	else if(tokens[0] == "JOIN")
 	{
-		if (tokens.size() < 2)
-		{
-			sendMsg(clientFd, "Usage: JOIN <#channel>\n");
-			return;
-		}
-		std::string channelName = tokens[1];
-		if (channelName[0] != '#')
-		{
-			sendMsg(clientFd, "Channel names must start with '#'\n");
-			return;
-		}
-		Channel *channel;
-		if (channels.count(channelName))
-		{
-			channel = channels[channelName];
-		}
-		else
-		{
-			channel = new Channel(channelName);
-			channels[channelName] = channel;
-			std::cout << "Created new channel: " << channelName << std::endl;
-		}
-		Client *client = getClientFd(clientFd);
-		if (!client)
-		{
-			std::cerr << "Client not found for fd: " << clientFd << std::endl;
-			return;
-		}
-		if (channel->isMember(client))
-		{
-			sendMsg(clientFd, "You are already in channel " + channelName + "\n");
-			return;
-		}
-		channel->addClient(client);
-		sendMsg(clientFd, "You have joined " + channelName + "\n");
+		handleJoin(clientFd, clients, tokens);
 	}
 }
 
