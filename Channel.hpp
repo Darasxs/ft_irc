@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/26 16:52:51 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:06:02 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ class Channel
 		std::string				getName(void) const;
 		std::vector<Client*>	getMembers(void) const;
 		std::vector<Client*>	getOperators(void) const;
+		std::vector<Client*> 	getChannelMembers(Channel *channel);
+
 
 		//Setters:
 		void		setTopic(const std::string &topic);

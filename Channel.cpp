@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 16:05:11 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:06:25 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,10 @@ void Channel::addClient(Client *client)
 std::string Channel::getName(void) const
 {
 	return (this->name);
+}
+
+std::vector<Client*> getChannelMembers(Channel *channel)
+{
+	// Assuming Channel has a method to expose its members
+	return channel->getMembers();
 }

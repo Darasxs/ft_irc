@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 16:59:14 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:06:34 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,18 @@ Channel	*Server::getChannel(const std::string &name)
 
 void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
 {
-	for (std::map<std::string, Channel*>::const_iterator it = channels.begin(); it != channels.end(); it++)
+	Channel	*channel = getChannel(tokens[1]);
+	if (channel)
 	{
-		if (it->second->getName() == tokens[1])
+		std::vector<Client*> members = getChannelMembers(channel);
+		for (std::vector<Client*>::const_iterator it = members.begin(); it != members.end(); ++it)
 		{
-			sendMsg(clientFd, "Correct!\n");
-			Channel	*channel = getChannel(tokens[1]);
-
-			for (std::vector<Client*>::const_iterator it = channel->members.begin())
-			return ;
+			Client *member = *it;
+			int memberFd = member->getFd();
+			// Example: Send a message to each member
+			sendMsg(memberFd, "Broadcast message to channel members\n");
 		}
+		return;
 	}
 	sendMsg(clientFd, "Channel must exist, in order to send message to it!\n");
 }
