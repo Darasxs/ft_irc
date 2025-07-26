@@ -6,7 +6,7 @@
 #    By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/30 16:15:27 by paprzyby          #+#    #+#              #
-#    Updated: 2025/06/21 15:37:47 by paprzyby         ###   ########.fr        #
+#    Updated: 2025/07/26 11:59:54 by paprzyby         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ NAME =		ircserv
 SRC =		main.cpp \
 			Irc.cpp \
 			Server.cpp \
-			Client.cpp
+			Client.cpp \
+			Channel.cpp
 
 OBJ_DIR =	obj
 OBJ =		$(SRC:%.cpp=$(OBJ_DIR)/%.o)

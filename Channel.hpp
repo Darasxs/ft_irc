@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/20 11:38:19 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 11:57:21 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class Channel
 
 	public:
 		Channel(void);
+		Channel(std::string name);
 		Channel(const Channel &other);
 		Channel &operator=(const Channel &other);
 		~Channel(void);

@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 11:37:25 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 12:01:22 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 Channel::Channel(void) : name(""), topic(""), members(), operators()	{}
 //client will set these variables only
 //channel cannot be created without a name, topic, members, operators
+
+Channel::Channel(std::string name) : name(name), topic(""), members(), operators()	{}
 
 Channel::Channel(const Channel &other)
 {
@@ -42,7 +44,7 @@ bool Channel::isMember(Client *client) const
 	if (client == nullptr)
 	{
 		std::cerr << "error: nullptr" << std::endl;
-		return ;
+		return (true);
 	}
 	return std::find(members.begin(), members.end(), client) != members.end();
 }
@@ -52,7 +54,7 @@ bool Channel::isOperator(Client *client) const
 	if (client == nullptr)
 	{
 		std::cerr << "error: nullptr" << std::endl;
-		return ;
+		return (true);
 	}
 	return std::find(operators.begin(), operators.end(), client) != operators.end();
 }

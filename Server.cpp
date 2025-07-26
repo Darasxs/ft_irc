@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 17:48:13 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/26 12:02:16 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void Server::serverInitialization()
 	//	throw std::runtime_error( "Failed to set non-blocking mode" );
 	//You can set or retrieve flags that control the behavior of a file descriptor, such as enabling non-blocking mode.
 	std::cout << YELLOW;
-	std::cout << "Listening on port " << PORT_NUMBER << "..." << std::endl;
-	std::cout << RESET;
+	std::cout << "Listening on port " << PORT_NUMBER << "..." << RESET << std::endl;
 }
 
 std::vector<std::string> Server::splitBuffer(const char *buffer)
@@ -106,7 +105,8 @@ void Server::acceptClients()
 	std::cout << GREEN;
 	std::cout << "New client connection from " << inet_ntoa(client_addr.sin_addr) << std::endl;
 	std::cout << RESET;
-	sendMsg(client_fd, "\nWelcome!\nUse HELP command if you don't know howt to proceed.\n\n");
+	sendMsg(client_fd, "\033[2J\033[H");
+	sendMsg(client_fd, "\033[1m\nSuccessfully conntected to the IRC server\n\nUse HELP command if you don't know how to proceed...\n\n\033[0m");
 }
 
 void Server::sendMsg(int receiverFd, const std::string &message)
@@ -291,7 +291,7 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	else if (tokens[0] == "HELP")
 	{
 		std::string helpMessage =
-			"\nALL Commands have to be written exactly like below, in UPPERCASE letters format.\n" 
+			"\nALL Commands have to be written exactly like below, in UPPERCASE letters format.\n"
 			"\nALL COMMANDS:\n\n"
 			"\tTHE FOLLOWING COMMANDS YOU NEED TO USE AFTER CONNECTING FOR THE FIRST TIME\n"
 			"\tNICK <nickname> - set a nickname, visible for other users. Nickname can be changed only once every 7 days.\n"
@@ -309,12 +309,46 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 			"\t\t l: Set/remove the user limit to channel\n"
 			"\tJOIN <channel> - join a specific channel\n"
 			"\tQUIT - disconnect from the server\n";
-			
+
 		sendMsg(clientFd, helpMessage);
 	}
-	else if(tokens[0] == "")
+	else if(tokens[0] == "JOIN")
 	{
-		std::cout << "No command" << std::endl;
+		if (tokens.size() < 2)
+		{
+			sendMsg(clientFd, "Usage: JOIN <#channel>\n");
+			return;
+		}
+		std::string channelName = tokens[1];
+		if (channelName[0] != '#')
+		{
+			sendMsg(clientFd, "Channel names must start with '#'\n");
+			return;
+		}
+		Channel *channel;
+		if (channels.count(channelName))
+		{
+			channel = channels[channelName];
+		}
+		else
+		{
+			channel = new Channel(channelName);
+			channels[channelName] = channel;
+			std::cout << "Created new channel: " << channelName << std::endl;
+		}
+		Client *client = getClientFd(clientFd);
+		if (!client)
+		{
+			std::cerr << "Client not found for fd: " << clientFd << std::endl;
+			return;
+		}
+		if (channel->isMember(client))
+		{
+			sendMsg(clientFd, "You are already in channel " + channelName + "\n");
+			return;
+		}
+		channel->addClient(client);
+		sendMsg(clientFd, "You have joined " + channelName + "\n");
 	}
 }
 
