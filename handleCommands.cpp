@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 16:06:43 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:59:14 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,17 @@ void	Server::handleUser(int clientFd, std::vector<std::string> &tokens)
 	sendMsg(clientFd, ackMessage);
 }
 
+Channel	*Server::getChannel(const std::string &name)
+{
+	for (std::map<std::string, Channel*>::const_iterator it = channels.begin(); it != channels.end(); ++it)
+	{
+		if (it->second->getName() == name)
+			return it->second;
+	}
+	return nullptr;
+}
+
+
 void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
 {
 	for (std::map<std::string, Channel*>::const_iterator it = channels.begin(); it != channels.end(); it++)
@@ -71,6 +82,9 @@ void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
 		if (it->second->getName() == tokens[1])
 		{
 			sendMsg(clientFd, "Correct!\n");
+			Channel	*channel = getChannel(tokens[1]);
+
+			for (std::vector<Client*>::const_iterator it = channel->members.begin())
 			return ;
 		}
 	}

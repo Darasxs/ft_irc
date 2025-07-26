@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/26 16:07:33 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:46:02 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ class Server
 		//Getters:
 		Client*						getClient(const std::string &nickname);
 		std::string					getPassword();
+		Channel*					getChannel(const std::string &name);
 
 		//Setters:
 		void						setPassword(const std::string &password);
