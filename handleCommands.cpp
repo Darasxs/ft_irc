@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 14:29:57 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:01:09 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,13 @@ void	Server::handlePrivmsg(int clientFd, std::vector<std::string> &tokens)
 			return;
 		}
 		int	receiverFd = receiverClient->getFd();
-		//Client *senderClient = getClientFd(clientFd);
-		//int	senderFd = senderClient->getFd();
+		Client *senderClient = getClientFd(clientFd);
 		std::string message = concatenateTokens(tokens);
+		if(senderClient->getNickname().empty())
+		{
+			sendMsg(clientFd, "The nickname must be set in order to send messages!\n");
+			return;
+		}
 		sendPrivMsg(receiverFd, clientFd, message);
 }
 
