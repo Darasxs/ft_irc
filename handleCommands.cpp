@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 20:06:48 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:25:17 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,16 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 					sendMsg(clientFd, "Invite-only mode disabled on " + target + "\n");
 				}
 			}
-			//add other modes
+			//info for darasso
+			//add other modes:
+			//t: Set/remove the restrictions of the TOPIC command to channel operators
+			//k: Set/remove the channel key (password)
+			//o: Give/take channel operator privilege
+			//l: Set/remove the user limit to channel
+			//else if (c == ...)
+			//{
+
+			//}
 			else
 			{
 				sendMsg(clientFd, "Unknown or unsupported mode\n");
