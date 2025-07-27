@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:53:23 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:08:50 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,8 @@ bool	Server::checkNickname(std::string &nickname)
 
 void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
+	(void)clients;
+
 	if (tokens.empty())
 		return;
 	Client *client = getClientFd(clientFd);
@@ -215,9 +217,7 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	if(tokens[0] == "KICK")
 	{
-		//handleKick(clientFd, clients, tokens);
-		(void)clients;
-		std::cout << "KICK command would be executed" << std::endl;
+		handleKick(clientFd, tokens);
 	}
 	else if(tokens[0] == "INVITE")
 	{

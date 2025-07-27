@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 19:01:47 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:31:04 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,67 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 					sendMsg(clientFd, "Invite-only mode disabled on " + target + "\n");
 				}
 			}
+			//add other modes
 			else
 			{
 				sendMsg(clientFd, "Unknown or unsupported mode\n");
 			}
 		}
 	}
+}
+
+void	Server::handleKick(int clientFd, const std::vector<std::string> &tokens)
+{
+	if (tokens.size() < 3)
+	{
+		sendMsg(clientFd, "Usage: KICK <#channel> <nickname>\n");
+		return;
+	}
+	std::string channelName = tokens[1];
+	std::string targetNick = tokens[2];
+	Client* requester = getClientFd(clientFd);
+	if (!requester)
+	{
+		sendMsg(clientFd, "Your client could not be identified.\n");
+		return;
+	}
+	if (channelName.empty() || channelName[0] != '#')
+	{
+		sendMsg(clientFd, "Invalid channel name.\n");
+		return;
+	}
+	if (!channels.count(channelName))
+	{
+		sendMsg(clientFd, "Channel does not exist.\n");
+		return;
+	}
+	if (requester->getNickname() == targetNick)
+	{
+		sendMsg(clientFd, "You cannot kick yourself.\n");
+		return;
+	}
+	Channel* channel = channels[channelName];
+	if (!channel->isOperator(requester))
+	{
+		sendMsg(clientFd, "You must be a channel operator to kick users.\n");
+		return;
+	}
+	Client* targetUser = getClient(targetNick);
+	if (!targetUser)
+	{
+		sendMsg(clientFd, "User " + targetNick + " not found.\n");
+		return;
+	}
+	if (!channel->isMember(targetUser))
+	{
+		sendMsg(clientFd, targetNick + " is not in channel " + channelName + "\n");
+		return;
+	}
+	channel->removeClient(targetUser);
+	sendMsg(targetUser->getFd(), "You have been kicked from " + channelName + " by " + requester->getNickname() + "\n");
+	// Notify other members
+	//std::string kickMsg = targetNick + " was kicked from " + channelName + " by " + requester->getNickname() + "\n";
+	//channel->broadcastMessage(kickMsg, targetUser);
 }
 
 void	Server::handleInvite(int clientFd, std::vector<std::string> &tokens)
@@ -219,6 +274,11 @@ void	Server::handleNotice(int clientFd, std::vector<std::string> &tokens)
 		sendMsg(clientFd, "PRIVMSG requires arguments: <nickname/#channel> <message>\n");
 		return;
 	}
+	if (!channel->isMember(getClientFd(clientFd)))
+	{
+		sendMsg(clientFd, "You must be a member of the channel to send a notice.\n");
+		return;
+	}
 	if (channel)
 	{
 		std::vector<Client*> members = channel->getMembers();
@@ -348,26 +408,3 @@ void	Server::handleHelp(int clientFd)
 
 		sendMsg(clientFd, helpMessage);
 }
-
-//int Server::handleKick(int clientFd, Client &client, const std::vector<std::string> &tokens)
-//{
-//	if (!client.isOperator)
-//	{
-//		std::cerr << "Client " << clientFd << " is not an Operator." << std::endl;
-//		std::cerr << "ONLY OPERATORS CAN USE KICK!" << std::endl;
-//		return 0;
-//	}
-//	if(tokens[1].empty())
-//	{
-//		std::cerr << "KICK requires an argument!" << std::endl;
-//		return 0;
-//	}
-
-//	const std::string &targerNickname = tokens[1];
-
-
-//	else
-//	{
-//		if(tokens[1] == )
-//	}
-//}

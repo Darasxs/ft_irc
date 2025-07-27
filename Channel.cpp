@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:42:44 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:26:10 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,3 +150,23 @@ void Channel::setInviteOnly(bool status)
 //	}
 //	operators.push_back(client);
 //}
+
+void Channel::removeMember(Client* client)
+{
+	std::vector<Client*>::iterator it = std::find(operators.begin(), operators.end(), client);
+	if (it != operators.end())
+	{
+		operators.erase(it);
+	}
+}
+
+void	Channel::removeClient(Client *client)
+{
+	std::vector<Client*>::iterator it = std::find(members.begin(), members.end(), client);
+	if (it != members.end())
+	{
+		members.erase(it);
+		removeMember(client);
+		removeInvite(client);
+	}
+}
