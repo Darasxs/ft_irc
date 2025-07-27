@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:41:26 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:44:46 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,11 @@ void	Server::handlePrivmsg(int clientFd, std::vector<std::string> &tokens)
 		return;
 	}
 	int	receiverFd = receiverClient->getFd();
+	if (receiverFd == clientFd)
+	{
+		sendMsg(clientFd, "You cannot send message to yourself!\n");
+		return;
+	}
 	Client *senderClient = getClientFd(clientFd);
 	std::string message = concatenateTokens(tokens);
 	if(senderClient->getNickname().empty())
