@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 16:02:47 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 15:51:12 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,21 +193,13 @@ bool	Server::checkNickname(std::string &nickname)
 
 void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &tokens)
 {
-	(void)clients;
 	if (tokens.empty())
 		return;
-	if(tokens[0] == "KICK")
+	Client *client = getClientFd(clientFd);
+	std::string message = concatenateTokens(tokens);
+	if (tokens[0] == "HELP")
 	{
-		//handleKick(clientFd, clients, tokens);
-		std::cout << "KICK command would be executed" << std::endl;
-	}
-	else if(tokens[0] == "INVITE")
-	{
-		std::cout << "INVITE command would be executed" << std::endl;
-	}
-	else if (tokens[0] == "PRIVMSG")
-	{
-		handlePrivmsg(clientFd, tokens);
+		handleHelp(clientFd);
 	}
 	else if (tokens[0] == "NICK")
 	{
@@ -217,9 +209,24 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	{
 		handleUser(clientFd, tokens);
 	}
-	else if (tokens[0] == "HELP")
+	if(client->getNickname().empty())
 	{
-		handleHelp(clientFd);
+		sendMsg(clientFd, "The nickname must be set in order to use commands\n");
+		return ;
+	}
+	if(tokens[0] == "KICK")
+	{
+		//handleKick(clientFd, clients, tokens);
+		(void)clients;
+		std::cout << "KICK command would be executed" << std::endl;
+	}
+	else if(tokens[0] == "INVITE")
+	{
+		std::cout << "INVITE command would be executed" << std::endl;
+	}
+	else if (tokens[0] == "PRIVMSG")
+	{
+		handlePrivmsg(clientFd, tokens);
 	}
 	else if(tokens[0] == "JOIN")
 	{
