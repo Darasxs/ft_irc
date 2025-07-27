@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:35:57 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:42:44 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool Channel::isMember(Client *client) const
 {
 	if (client == nullptr)
 	{
-		std::cerr << "error: nullptr" << std::endl;
+		std::cerr << "Error: isMember() failed" << std::endl;
 		return (true);
 	}
 	return std::find(members.begin(), members.end(), client) != members.end();
@@ -53,7 +53,7 @@ bool Channel::isOperator(Client *client) const
 {
 	if (client == nullptr)
 	{
-		std::cerr << "error: nullptr" << std::endl;
+		std::cerr << "Error: isOperator() failed" << std::endl;
 		return (true);
 	}
 	return std::find(operators.begin(), operators.end(), client) != operators.end();

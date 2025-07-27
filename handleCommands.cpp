@@ -6,19 +6,27 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:32:40 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:44:59 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
+//void	handleMode(int clientFd, std::vector<std::string> &tokens)
+//{
+//	if (tokens.size() < 4)
+//	{
+//		std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
+//		return;
+//	}
+//}
+
 void	Server::handleInvite(int clientFd, std::vector<std::string> &tokens)
 {
 	if (tokens.size() < 3)
 	{
-		std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
+		sendMsg(clientFd, "PRIVMSG requires arguments: <nickname/channel> <message>\n");
 		return;
-		//sendPrivMsg???
 	}
 	std::string targetNick = tokens[1];
 	std::string channelName = tokens[2];
@@ -77,7 +85,7 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 	Client *client = getClientFd(clientFd);
 	if (!client)
 	{
-		std::cerr << "Client not found for fd: " << clientFd << std::endl;
+		std::cerr << "Error: Client not found for fd " << clientFd << std::endl;
 		return;
 	}
 	if (channels.count(channelName))
@@ -148,7 +156,7 @@ void	Server::handleNotice(int clientFd, std::vector<std::string> &tokens)
 	Channel	*channel = getChannel(tokens[1]);
 	if (tokens.size() < 3 || tokens[1][0] != '#')
 	{
-		std::cerr << "PRIVMSG requires arguments: <nickname/#channel> <message>" << std::endl;
+		sendMsg(clientFd, "PRIVMSG requires arguments: <nickname/#channel> <message>\n");
 		return;
 	}
 	if (channel)
@@ -176,18 +184,18 @@ void	Server::handlePrivmsg(int clientFd, std::vector<std::string> &tokens)
 {
 	if (tokens.size() < 3)
 	{
-		std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
+		sendMsg(clientFd, "PRIVMSG requires arguments: <nickname/#channel> <message>!\n");
 		return;
 	}
 	if (tokens[1][0] == '#')
 	{
-		std::cerr << "PRIVMSG cannot be used on a channel!" << std::endl;
+		sendMsg(clientFd, "PRIVMSG cannot be used on a channel!\n");
 		return;
 	}
 	Client *receiverClient = getClient(tokens[1]);
 	if (!receiverClient)
 	{
-		std::cerr << "Nickname not found: " << tokens[1] << std::endl;
+		sendMsg(clientFd, "Nickname not found\n");
 		return;
 	}
 	int	receiverFd = receiverClient->getFd();
