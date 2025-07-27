@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 13:47:01 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:12:43 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 class Channel
 {
 	private:
-		std::string name;
-		std::string topic;
-		std::vector<Client*> members;
-		std::vector<Client*> operators;
+		std::string				name;
+		std::string				topic;
+		std::vector<Client*>	members;
+		std::vector<Client*>	operators;
+		std::vector<Client*>	invited;
+		bool					inviteOnly;
 
 	public:
 		Channel(void);
@@ -51,8 +53,12 @@ class Channel
 		void removeOperator(Client *client);
 		bool hasMember(const Client &client) const;
 		void removeMember(const Client &client);
-
 		void sendMessage(const std::string &message, Client *sender);
+		void addInvite(Client *invitee);
+		bool isInvited(Client* invitee);
+		bool isInviteOnly() const;
+		void removeInvite(Client* client);
+		void setInviteOnly(bool status);
 };
 
 #endif

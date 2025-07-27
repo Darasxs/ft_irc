@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 13:57:15 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:13:37 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) : name(""), topic(""), members(), operators()	{}
+Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false)	{}
 //client will set these variables only
 //channel cannot be created without a name, topic, members, operators
 
-Channel::Channel(std::string name) : name(name), topic(""), members(), operators()	{}
+Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false)	{}
 
 Channel::Channel(const Channel &other)
 {
@@ -99,4 +99,46 @@ std::string Channel::getName(void) const
 std::vector<Client*> Channel::getMembers(void) const
 {
 	return this->members;
+}
+
+void Channel::addInvite(Client* invitee)
+{
+	for (std::vector<Client*>::iterator it = invited.begin(); it != invited.end(); ++it)
+	{
+		if (*it == invitee)
+			return ;
+	}
+	invited.push_back(invitee);
+}
+
+bool Channel::isInvited(Client* invitee)
+{
+	for (std::vector<Client*>::const_iterator it = invited.begin(); it != invited.end(); ++it)
+	{
+		if (*it == invitee)
+			return true;
+	}
+	return false;
+}
+
+bool Channel::isInviteOnly() const
+{
+	return inviteOnly;
+}
+
+void Channel::removeInvite(Client* client)
+{
+	for (std::vector<Client*>::iterator it = invited.begin(); it != invited.end(); ++it)
+	{
+		if (*it == client)
+		{
+			invited.erase(it);
+			return;
+		}
+	}
+}
+
+void Channel::setInviteOnly(bool status)
+{
+	inviteOnly = status;
 }

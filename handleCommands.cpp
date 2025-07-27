@@ -3,14 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 14:09:15 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:13:10 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void	Server::handleInvite(int clientFd, std::vector<std::string> &tokens)
+{
+	if (tokens.size() < 3)
+	{
+		std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
+		return;
+		//sendPrivMsg???
+	}
+	std::string targetNick = tokens[1];
+	std::string channelName = tokens[2];
+	if (channelName[0] != '#')
+	{
+		sendMsg(clientFd, "Channel name must start with '#'\n");
+		return;
+	}
+	Client* inviter = getClientFd(clientFd);
+	Client* invitee = getClient(targetNick);
+	Channel* channel = getChannel(channelName);
+	if (!invitee)
+	{
+		sendMsg(clientFd, "No such user\n");
+		return;
+	}
+	if (!channel)
+	{
+		sendMsg(clientFd, "No such channel\n");
+		return;
+	}
+	if (!channel->isMember(inviter))
+	{
+		sendMsg(clientFd, "You are not in the channel\n");
+		return;
+	}
+	if (channel->isMember(invitee))
+	{
+		sendMsg(clientFd, "User is already in the channel\n");
+		return;
+	}
+	//if (channel->isInviteOnly() && !channel->isOperator(inviter))
+	//{
+	//	sendMsg(clientFd, "You must be a channel operator to invite users to an invite-only channel\n");
+	//	return;
+	//}
+	channel->addInvite(invitee);
+	sendMsg(invitee->getFd(), "You have been invited to " + channelName + " by " + inviter->getNickname() + "\n");
+	sendMsg(clientFd, "Invitation sent to " + invitee->getNickname() + "\n");
+}
 
 void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 {
@@ -47,6 +95,12 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 		sendMsg(clientFd, "You are already in channel " + channelName + "\n");
 		return;
 	}
+	if (channel->isInviteOnly() && !channel->isInvited(client))
+	{
+		sendMsg(clientFd, "This channel is invite-only. You need an invitation.\n");
+		return;
+	}
+	channel->removeInvite(client);
 	channel->addClient(client);
 	sendMsg(clientFd, "You have joined " + channelName + "\n");
 }

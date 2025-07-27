@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/26 16:46:02 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 16:40:51 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ class Server
 		void						handleUser(int clientFd, std::vector<std::string> &tokens);
 		void						handleJoin(int clientFd, std::vector<std::string> &tokens);
 		void						handleChannelmsg(int clientFd, std::vector<std::string> &tokens);
+		void						handleInvite(int clientFd, std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;

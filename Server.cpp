@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 15:51:12 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 16:41:43 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	else if(tokens[0] == "INVITE")
 	{
 		std::cout << "INVITE command would be executed" << std::endl;
+		handleInvite(clientFd, tokens);
 	}
 	else if (tokens[0] == "PRIVMSG")
 	{
