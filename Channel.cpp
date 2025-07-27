@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:13:37 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:29:54 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,36 +59,34 @@ bool Channel::isOperator(Client *client) const
 	return std::find(operators.begin(), operators.end(), client) != operators.end();
 }
 
-void Channel::addOperator(Client *client)
+bool Channel::addOperator(Client *client)
 {
 	if (client == nullptr)
 	{
-		std::cerr << "error: nullptr" << std::endl;
-		return ;
+		std::cerr << "Error: addOperator() failed" << std::endl;
+		return (true);
 	}
 	if (isOperator(client))
 	{
-		std::cerr << "The client is already an operator." << std::endl;
-		return ;
+		return (true);
 	}
 	operators.push_back(client);
-	std::cout << "The client has become na operator." << std::endl;
+	return (false);
 }
 
-void Channel::addClient(Client *client)
+bool Channel::addClient(Client *client)
 {
 	if (client == nullptr)
 	{
-		std::cerr << "error: nullptr" << std::endl;
-		return ;
+		std::cerr << "Error: addClient() failed" << std::endl;
+		return (true);
 	}
 	if (isMember(client))
 	{
-		std::cerr << "The client is already a member of this channel." << std::endl;
-		return ;
+		return (true);
 	}
 	members.push_back(client);
-	std::cout << "The client has been added to the channel." << std::endl;
+	return (false);
 }
 
 std::string Channel::getName(void) const
@@ -141,4 +139,14 @@ void Channel::removeInvite(Client* client)
 void Channel::setInviteOnly(bool status)
 {
 	inviteOnly = status;
+}
+
+void Channel::addOperator(Client *client)
+{
+	for (std::vector<Client*>::iterator it = operators.begin(); it != operators.end(); ++it)
+	{
+		if (*it == client)
+			return ;
+	}
+	operators.push_back(client);
 }

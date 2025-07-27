@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:50:27 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:32:59 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void Server::acceptClients()
 	if (getnameinfo((struct sockaddr *)&client_addr, client_len, host, sizeof(host), nullptr, 0, 0) == 0)
 	{
 		newClient->sethostname(host);
-		//std::cout << newClient->gethostname() << std::endl;
 	}
 	else
 	{
@@ -222,7 +221,6 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if(tokens[0] == "INVITE")
 	{
-		std::cout << "INVITE command would be executed" << std::endl;
 		handleInvite(clientFd, tokens);
 	}
 	else if (tokens[0] == "NOTICE")

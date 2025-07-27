@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 17:50:23 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:32:46 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ class Server
 		void						parseData(int fd, Client *client, std::vector<std::string> &tokens);
 		std::vector<std::string>	splitBuffer(const char *buffer);
 		int							handleKick(int clientFd, const std::vector<std::string> &tokens);
-		void						handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens);
 		void						sendPrivMsg(int receiverFd, int senderFd, const std::string &message);
 		void						sendMsg(int receiverfD, const std::string &message);
 		Client*						getClientFd(const int clientFd);

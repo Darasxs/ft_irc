@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:52:35 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:32:40 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 		return;
 	}
 	Channel *channel;
+	Client *client = getClientFd(clientFd);
+	if (!client)
+	{
+		std::cerr << "Client not found for fd: " << clientFd << std::endl;
+		return;
+	}
 	if (channels.count(channelName))
 	{
 		channel = channels[channelName];
@@ -82,13 +88,15 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 	{
 		channel = new Channel(channelName);
 		channels[channelName] = channel;
-		std::cout << "Created new channel: " << channelName << std::endl;
-	}
-	Client *client = getClientFd(clientFd);
-	if (!client)
-	{
-		std::cerr << "Client not found for fd: " << clientFd << std::endl;
-		return;
+		std::cout << "New channel has been created: " << channelName << std::endl;
+		if (channel->addOperator(client))
+		{
+			sendMsg(clientFd, "You are already the operator of this channel\n");
+		}
+		else
+		{
+			sendMsg(clientFd, "You are now operator of the channel " + channelName + "\n");
+		}
 	}
 	if (channel->isMember(client))
 	{
@@ -101,8 +109,15 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 		return;
 	}
 	channel->removeInvite(client);
-	channel->addClient(client);
-	sendMsg(clientFd, "You have joined " + channelName + "\n");
+	if (channel->addClient(client))
+	{
+		sendMsg(clientFd, "You are already member of the channel " + channelName + "\n");
+
+	}
+	else
+	{
+		sendMsg(clientFd, "You are now member of the channel " + channelName + "\n");
+	}
 }
 
 void	Server::handleUser(int clientFd, std::vector<std::string> &tokens)
@@ -239,7 +254,6 @@ void	Server::handleNick(int clientFd, std::vector<std::string> &tokens)
 	{
 		sendMsg(clientFd, "The Nickname is already in use. Please use a different one!\n");
 	}
-	//std::cout << targetClientFd->getNickname() << std::endl;
 }
 
 void	Server::handleHelp(int clientFd)
@@ -265,42 +279,6 @@ void	Server::handleHelp(int clientFd)
 			"\tQUIT - disconnect from the server\n";
 
 		sendMsg(clientFd, helpMessage);
-}
-
-void	Server::handleInvite(int clientFd, Client &client, const std::vector<std::string> &tokens)
-{
-	std::cout << "INVITE command would be executed" << std::endl;
-	(void)clientFd;
-	(void)client;
-	(void)tokens;
-	//if(tokens.size() > 3 || tokens[1].empty() || tokens[2].empty())
-	//{
-	//	std::cerr << "INVITE requires arguments: <nickname>, <channel>" << std::endl;
-	//}
-	//else if (std::find(clients.begin(), clients.end(), client) != clients.end())
-	//{
-	//	std::cerr << "This operator client does not exist!" << std::endl;
-	//}
-	//else if (std::find(channels.begin(), channels.end(), tokens[2]) != channels.end())
-	//{
-	//	std::cerr << "This channel does not exist!" << std::endl;
-	//}
-	//Channel *channel = getChannel(tokens[2]);
-	//if (!channel)
-	//{
-	//	return;
-	//}
-	//if (std::find(clients.begin(), clients.end(), tokens[1]) != clients.end())
-	//{
-	//	std::cerr << "The target client does not exist!" << std::endl;
-	//}
-	//if (!channel->isMember(&client) || !channel->isOperator(&client))
-	//{
-	//	std::cerr << "To invite others to a channel, the client must be an operator of this channel!" << std::endl;
-	//	return;
-	//}
-
-	//std::cout << "The target client has now become the member of the channel." << std::endl;
 }
 
 //int Server::handleKick(int clientFd, Client &client, const std::vector<std::string> &tokens)

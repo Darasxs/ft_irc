@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 17:12:43 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:29:42 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ class Channel
 
 		bool isMember(Client *client) const;
 		bool isOperator(Client *client) const;
-		void addClient(Client *client);
+		bool addClient(Client *client);
 		void removeClient(Client *client);
-		void addOperator(Client *client);
+		bool addOperator(Client *client);
 		void removeOperator(Client *client);
 		bool hasMember(const Client &client) const;
 		void removeMember(const Client &client);
