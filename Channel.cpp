@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/26 17:06:25 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/27 13:57:15 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,7 @@ std::string Channel::getName(void) const
 	return (this->name);
 }
 
-std::vector<Client*> getChannelMembers(Channel *channel)
+std::vector<Client*> Channel::getMembers(void) const
 {
-	// Assuming Channel has a method to expose its members
-	return channel->getMembers();
+	return this->members;
 }

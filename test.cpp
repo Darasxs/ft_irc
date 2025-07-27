@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handleCommands.cpp                                 :+:      :+:    :+:   */
+/*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 14:09:15 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:04:56 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
+
+// Helper function to retrieve channel members
+std::vector<Client*> getChannelMembers(Channel *channel)
+{
+	// Assuming Channel has a method to expose its members
+	return channel->getMembers();
+}
 
 void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 {
@@ -74,23 +83,19 @@ Channel	*Server::getChannel(const std::string &name)
 	return nullptr;
 }
 
+
 void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
 {
 	Channel	*channel = getChannel(tokens[1]);
 	if (channel)
 	{
-		std::vector<Client*> members = channel->getMembers();
+		std::vector<Client*> members = getChannelMembers(channel);
 		for (std::vector<Client*>::const_iterator it = members.begin(); it != members.end(); ++it)
 		{
 			Client *member = *it;
 			int memberFd = member->getFd();
-			Client *senderFd = getClientFd(clientFd);
-			std::string senderNickname = senderFd->getNickname();
-			std::string concatenatedMessage = senderNickname;
-			concatenatedMessage += "> ";
-			concatenatedMessage += tokens[2];
-			concatenatedMessage += "\n";
-			sendMsg(memberFd, concatenatedMessage);
+			// Example: Send a message to each member
+			sendMsg(memberFd, "Broadcast message to channel members\n");
 		}
 		return;
 	}

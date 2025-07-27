@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/26 17:06:02 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/07/27 13:47:01 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ class Channel
 		//Getters:
 		std::string				getTopic(void) const;
 		std::string				getName(void) const;
-		std::vector<Client*>	getMembers(void) const;
 		std::vector<Client*>	getOperators(void) const;
-		std::vector<Client*> 	getChannelMembers(Channel *channel);
-
+		std::vector<Client*>	getMembers(void) const;
 
 		//Setters:
 		void		setTopic(const std::string &topic);
