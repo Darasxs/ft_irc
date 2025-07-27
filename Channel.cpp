@@ -6,17 +6,17 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 19:26:10 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:01:22 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false)	{}
+Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false)	{}
 //client will set these variables only
 //channel cannot be created without a name, topic, members, operators
 
-Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false)	{}
+Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false)	{}
 
 Channel::Channel(const Channel &other)
 {
@@ -169,4 +169,19 @@ void	Channel::removeClient(Client *client)
 		removeMember(client);
 		removeInvite(client);
 	}
+}
+
+bool	Channel::isTopicLocked()
+{
+	return (this->lockedTopic);
+}
+
+void	Channel::setTopic(const std::string &topic)
+{
+	this->topic = topic;
+}
+
+std::string	Channel::getTopic(void) const
+{
+	return (this->topic);
 }

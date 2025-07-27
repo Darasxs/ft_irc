@@ -6,11 +6,65 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 19:31:04 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:06:48 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void	Server::handleTopic(int clientFd, const std::vector<std::string> &tokens)
+{
+	if (tokens.size() < 2)
+	{
+		sendMsg(clientFd, "Usage: TOPIC <#channel> <new topic>\n");
+		return;
+	}
+	std::string channelName = tokens[1];
+	if (channelName[0] != '#')
+	{
+		sendMsg(clientFd, "Invalid channel name.\n");
+		return;
+	}
+	Channel* channel = getChannel(channelName);
+	if (!channel)
+	{
+		sendMsg(clientFd, "Channel does not exist.\n");
+		return;
+	}
+	Client* client = getClientFd(clientFd);
+	if (!client)
+	{
+		sendMsg(clientFd, "Client not found.\n");
+		return;
+	}
+	if (!channel->isMember(client))
+	{
+		sendMsg(clientFd, "You must be a member of the channel to view or set the topic.\n");
+		return;
+	}
+	if (tokens.size() == 2)
+	{
+		std::string topic = channel->getTopic();
+		if (topic.empty())
+			sendMsg(clientFd, "No topic is set for " + channelName + ".\n");
+		else
+			sendMsg(clientFd, "Topic for " + channelName + ": " + topic + "\n");
+		return;
+	}
+	if (channel->isTopicLocked() && !channel->isOperator(client))
+	{
+		sendMsg(clientFd, "Only operators can set the topic in this channel.\n");
+		return;
+	}
+	std::string newTopic;
+	for (size_t i = 2; i < tokens.size(); ++i)
+	{
+		newTopic += tokens[i];
+		if (i + 1 != tokens.size())
+			newTopic += " ";
+	}
+	channel->setTopic(newTopic);
+}
 
 void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 {
@@ -240,6 +294,14 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 	else
 	{
 		sendMsg(clientFd, "You are now member of the channel " + channelName + "\n");
+	}
+	if (channel->getTopic().empty())
+	{
+		sendMsg(clientFd, "This channel has no topic yet\n");
+	}
+	else
+	{
+		sendMsg(clientFd, "Topic of this channel is:\n" + channel->getTopic() + "\n");
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 19:08:50 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:53:13 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,10 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	else if(tokens[0] == "MODE")
 	{
 		handleMode(clientFd, tokens);
+	}
+	else if(tokens[0] == "TOPIC")
+	{
+		handleTopic(clientFd, tokens);
 	}
 }
 

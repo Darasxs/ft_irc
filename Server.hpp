@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 19:20:28 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:52:59 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ class Server
 		void						handleInvite(int clientFd, std::vector<std::string> &tokens);
 		void						handleMode(int clientFd, std::vector<std::string> &tokens);
 		void						handleKick(int clientFd, const std::vector<std::string> &tokens);
+		void						handleTopic(int clientFd, const std::vector<std::string> &tokens);
 
 	private:
 		int								serverFd;
