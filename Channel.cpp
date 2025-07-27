@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:29:54 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:35:57 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,12 @@ void Channel::setInviteOnly(bool status)
 	inviteOnly = status;
 }
 
-void Channel::addOperator(Client *client)
-{
-	for (std::vector<Client*>::iterator it = operators.begin(); it != operators.end(); ++it)
-	{
-		if (*it == client)
-			return ;
-	}
-	operators.push_back(client);
-}
+//void Channel::addOperator(Client *client)
+//{
+//	for (std::vector<Client*>::iterator it = operators.begin(); it != operators.end(); ++it)
+//	{
+//		if (*it == client)
+//			return ;
+//	}
+//	operators.push_back(client);
+//}
