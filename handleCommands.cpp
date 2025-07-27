@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:13:10 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:41:26 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,11 @@ Channel	*Server::getChannel(const std::string &name)
 void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
 {
 	Channel	*channel = getChannel(tokens[1]);
+	if (tokens.size() < 3 || tokens[1][0] != '#')
+	{
+		std::cerr << "PRIVMSG requires arguments: <nickname/#channel> <message>" << std::endl;
+		return;
+	}
 	if (channel)
 	{
 		std::vector<Client*> members = channel->getMembers();
@@ -160,11 +165,10 @@ void	Server::handlePrivmsg(int clientFd, std::vector<std::string> &tokens)
 	}
 	if (tokens[1][0] == '#')
 	{
-		handleChannelmsg(clientFd, tokens);
+		std::cerr << "PRIVMSG cannot be used on a channel!" << std::endl;
 		return;
 	}
 	Client *receiverClient = getClient(tokens[1]);
-
 	if (!receiverClient)
 	{
 		std::cerr << "Nickname not found: " << tokens[1] << std::endl;

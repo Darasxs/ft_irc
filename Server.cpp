@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 16:41:43 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:34:41 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,10 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 		std::cout << "INVITE command would be executed" << std::endl;
 		handleInvite(clientFd, tokens);
 	}
+	else if (tokens[0] == "NOTICE")
+	{
+		handleChannelmsg(clientFd, tokens);
+	}
 	else if (tokens[0] == "PRIVMSG")
 	{
 		handlePrivmsg(clientFd, tokens);
@@ -277,7 +281,7 @@ void Server::serverStart()
 	while (true)
 	{
 		if (poll(fds.data(), fds.size(), -1) == -1)
-			throw std::runtime_error("Error: poll failed");
+			throw std::runtime_error("Error: Poll failed");
 		for (size_t i = 0; i < fds.size(); i++)
 		{
 			if (fds[i].revents & POLLIN)
