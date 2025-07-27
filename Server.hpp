@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 16:40:51 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:50:23 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ class Server
 		void						handlePrivmsg(int clientFd, std::vector<std::string> &tokens);
 		void						handleUser(int clientFd, std::vector<std::string> &tokens);
 		void						handleJoin(int clientFd, std::vector<std::string> &tokens);
-		void						handleChannelmsg(int clientFd, std::vector<std::string> &tokens);
+		void						handleNotice(int clientFd, std::vector<std::string> &tokens);
 		void						handleInvite(int clientFd, std::vector<std::string> &tokens);
 
 	private:

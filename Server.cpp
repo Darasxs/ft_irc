@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:34:41 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:50:27 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	}
 	else if (tokens[0] == "NOTICE")
 	{
-		handleChannelmsg(clientFd, tokens);
+		handleNotice(clientFd, tokens);
 	}
 	else if (tokens[0] == "PRIVMSG")
 	{

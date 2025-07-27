@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 17:44:46 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:52:35 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ Channel	*Server::getChannel(const std::string &name)
 	return nullptr;
 }
 
-void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
+void	Server::handleNotice(int clientFd, std::vector<std::string> &tokens)
 {
 	Channel	*channel = getChannel(tokens[1]);
 	if (tokens.size() < 3 || tokens[1][0] != '#')
@@ -146,7 +146,8 @@ void	Server::handleChannelmsg(int clientFd, std::vector<std::string> &tokens)
 			Client *senderFd = getClientFd(clientFd);
 			std::string senderNickname = senderFd->getNickname();
 			std::string concatenatedMessage = senderNickname;
-			concatenatedMessage += "> ";
+			concatenatedMessage += tokens[1];
+			concatenatedMessage += " ";
 			concatenatedMessage += tokens[2];
 			concatenatedMessage += "\n";
 			sendMsg(memberFd, concatenatedMessage);
