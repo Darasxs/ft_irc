@@ -6,20 +6,80 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:44:59 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:01:47 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-//void	handleMode(int clientFd, std::vector<std::string> &tokens)
-//{
-//	if (tokens.size() < 4)
-//	{
-//		std::cerr << "PRIVMSG requires arguments: <nickname/channel> <message>" << std::endl;
-//		return;
-//	}
-//}
+void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
+{
+	if (tokens.size() < 3)
+	{
+		sendMsg(clientFd, "MODE requires arguments: <target> <mode>\n");
+		return;
+	}
+	std::string target = tokens[1];
+	Client* client = getClientFd(clientFd);
+	if (!client)
+	{
+		sendMsg(clientFd, "Client not found.\n");
+		return;
+	}
+	if (target.empty() || target[0] != '#')
+	{
+		sendMsg(clientFd, "Only channel modes supported.\n");
+		return;
+	}
+	Channel* channel = nullptr;
+	if (channels.count(target))
+	{
+		channel = channels[target];
+	}
+	else
+	{
+		sendMsg(clientFd, "Channel does not exist.\n");
+		return;
+	}
+	if (!channel->isOperator(client))
+	{
+		sendMsg(clientFd, "You must be a channel operator to change modes.\n");
+		return;
+	}
+	std::string modes = tokens[2];
+	bool adding = true;
+	for (size_t i = 0; i < modes.size(); i++)
+	{
+		char c = modes[i];
+		if (c == '+')
+		{
+			adding = true;
+		}
+		else if (c == '-')
+		{
+			adding = false;
+		}
+		else
+		{
+			if (c == 'i')
+			{
+				channel->setInviteOnly(adding);
+				if (adding == true)
+				{
+					sendMsg(clientFd, "Invite-only mode enabled on " + target + "\n");
+				}
+				else
+				{
+					sendMsg(clientFd, "Invite-only mode disabled on " + target + "\n");
+				}
+			}
+			else
+			{
+				sendMsg(clientFd, "Unknown or unsupported mode\n");
+			}
+		}
+	}
+}
 
 void	Server::handleInvite(int clientFd, std::vector<std::string> &tokens)
 {

@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 18:45:51 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:53:23 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,10 +235,10 @@ void	Server::parseData(int clientFd, Client *clients, std::vector<std::string> &
 	{
 		handleJoin(clientFd, tokens);
 	}
-	//else if(tokens[0] == "MODE")
-	//{
-	//	handleMode(clientFd, tokens);
-	//}
+	else if(tokens[0] == "MODE")
+	{
+		handleMode(clientFd, tokens);
+	}
 }
 
 void Server::handleData(size_t &i)
