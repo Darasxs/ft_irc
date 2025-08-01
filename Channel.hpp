@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/08/01 20:48:32 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:38:29 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ class Channel
 		bool					inviteOnly;
 		bool					lockedTopic;
 		int						user_limit;
+		std::string				channel_key;
+		bool					key;
 
 	public:
 		Channel(void);
@@ -66,6 +68,10 @@ class Channel
 		void setOperatorPrivilege(bool status);
 		void setUserLimit(int limit);
 		int	getUserLimit(void);
+		void setChannelKey(std::string key);
+		std::string	getChannelKey();
+		void setKey(bool key);
+		bool getKey(void);
 };
 
 #endif

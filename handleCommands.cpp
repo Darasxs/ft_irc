@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/01 21:06:03 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:46:33 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,18 +144,27 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 				sendMsg(clientFd, "Topic Command restrictions are off " + target + "\n");
 			}
 		}
-		//else if (c == 'k')
-		//{
-		//	channel->setChannelKey(adding);
-		//	if (adding == true)
-		//	{
-		//		sendMsg(clientFd, "The Channel Key is on " + target + "\n");
-		//	}
-		//	else
-		//	{
-		//		sendMsg(clientFd, "The Channel Key is off " + target + "\n");
-		//	}
-		//}
+		else if (c == 'k')
+		{
+			if (adding == true)
+			{
+				if (!tokens[3].empty() && tokens[4].empty() && tokens[3][0] != '\0')
+				{
+					channel->setChannelKey(tokens[3]);
+					sendMsg(clientFd, "The Channel Key is on " + target + "\n");
+					channel->setKey(true);
+				}
+				else
+				{
+					sendMsg(clientFd, "Wrong arguments for 'k' mode" + target + "\n");
+				}
+			}
+			else
+			{
+				channel->setChannelKey("");
+				sendMsg(clientFd, "The Channel Key is off " + target + "\n");
+			}
+		}
 		//else if (c == 'o')
 		//{
 
@@ -353,6 +362,27 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 		sendMsg(clientFd, "This channel is already full\n");
 		return ;
 	}
+	//if (!channel->getChannelKey().empty())
+	//{
+	//	if ((tokens[3].empty() || ((channel->getChannelKey())[0] != '\0')) && tokens.size() > 4)
+	//	{
+	//		sendMsg(clientFd, "Key is required to join this channel!\n");
+	//		return ;
+	//	}
+	//}
+	if (channel->getKey())
+	{
+		if (tokens[3].empty() && tokens.size() != 3)
+		{
+			sendMsg(clientFd, "Key is required to join this channel!\n");
+			return ;
+		}
+		if (tokens[3] != channel->getChannelKey())
+		{
+			sendMsg(clientFd, "The key is wrong!\n");
+			return;
+		}
+	}
 	if (channel->addClient(client))
 	{
 		sendMsg(clientFd, "You are already member of the channel " + channelName + "\n");
@@ -475,7 +505,7 @@ void	Server::handleNick(int clientFd, std::vector<std::string> &tokens)
 	if (targetClientFd->getLastNicknameChange() != 0)
 	{
 		double secondsSinceLastChange = difftime(currentTime, targetClientFd->getLastNicknameChange());
-		if (secondsSinceLastChange < 7 * 24 * 60 * 60) // 7 dni
+		if (secondsSinceLastChange < 7 * 24 * 60 * 60)
 		{
 			sendMsg(clientFd, "The Nickname can be only changed once every 7 days.\n");
 			time_t sevenDays = 7 * 24 * 60 * 60;

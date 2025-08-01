@@ -6,22 +6,19 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/01 20:53:50 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:38:25 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX)	{}
-//client will set these variables only
-//channel cannot be created without a name, topic, members, operators
+Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX), channel_key(""), key(false){}
 
-Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX)	{}
+Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX), channel_key(""), key(false)	{}
 
 Channel::Channel(const Channel &other)
 {
 	(void)other;
-	//not finished
 }
 
 
@@ -199,4 +196,24 @@ void	Channel::setUserLimit(int limit)
 int	Channel::getUserLimit(void)
 {
 	return (this->user_limit);
+}
+
+void Channel::setChannelKey(std::string key)
+{
+	channel_key = key;
+}
+
+std::string	Channel::getChannelKey()
+{
+	return (this->channel_key);
+}
+
+void Channel::setKey(bool key)
+{
+	this->key = key;
+}
+
+bool Channel::getKey(void)
+{
+	return(this->key);
 }
