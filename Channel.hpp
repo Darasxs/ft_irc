@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 19:57:16 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:48:32 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class Channel
 		std::vector<Client*>	invited;
 		bool					inviteOnly;
 		bool					lockedTopic;
+		int						user_limit;
 
 	public:
 		Channel(void);
@@ -61,6 +62,10 @@ class Channel
 		void removeInvite(Client* client);
 		void setInviteOnly(bool status);
 		bool isTopicLocked();
+		void setTopicRestrictions(bool status);
+		void setOperatorPrivilege(bool status);
+		void setUserLimit(int limit);
+		int	getUserLimit(void);
 };
 
 #endif

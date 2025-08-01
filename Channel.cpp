@@ -6,17 +6,17 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 20:01:22 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 20:53:50 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false)	{}
+Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX)	{}
 //client will set these variables only
 //channel cannot be created without a name, topic, members, operators
 
-Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false)	{}
+Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX)	{}
 
 Channel::Channel(const Channel &other)
 {
@@ -141,6 +141,11 @@ void Channel::setInviteOnly(bool status)
 	inviteOnly = status;
 }
 
+void Channel::setTopicRestrictions(bool status)
+{
+	lockedTopic = status;
+}
+
 //void Channel::addOperator(Client *client)
 //{
 //	for (std::vector<Client*>::iterator it = operators.begin(); it != operators.end(); ++it)
@@ -184,4 +189,14 @@ void	Channel::setTopic(const std::string &topic)
 std::string	Channel::getTopic(void) const
 {
 	return (this->topic);
+}
+
+void	Channel::setUserLimit(int limit)
+{
+	user_limit = limit;
+}
+
+int	Channel::getUserLimit(void)
+{
+	return (this->user_limit);
 }
