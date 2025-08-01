@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/01 21:46:33 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:48:20 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 		{
 			if (adding == true)
 			{
-				if (!tokens[3].empty() && tokens[4].empty() && tokens[3][0] != '\0')
+				if (!tokens[3].empty() && tokens[3][0] != '\0' && tokens.size() == 4)
 				{
 					channel->setChannelKey(tokens[3]);
 					sendMsg(clientFd, "The Channel Key is on " + target + "\n");
