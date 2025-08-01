@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/01 20:58:54 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:06:03 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,94 +102,102 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 	}
 	std::string modes = tokens[2];
 	bool adding = true;
-	for (size_t i = 0; i < modes.size(); i++)
+	size_t i = 0;
+	char c = modes[i];
+	if (c == '+')
 	{
-		char c = modes[i];
-		if (c == '+' && modes[i + 1])
+		adding = true;
+	}
+	else if (c == '-')
+	{
+		adding = false;
+	}
+	else
+	{
+		sendMsg(clientFd, "Unknown or unsupported mode\n");
+		return ;
+	}
+	if (modes[i + 1])
+	{
+		c = modes[i + 1];
+		if (c == 'i')
 		{
-			adding = true;
-		}
-		else if (c == '-')
-		{
-			adding = false;
-		}
-		else
-		{
-			if (c == 'i')
+			channel->setInviteOnly(adding);
+			if (adding == true)
 			{
-				channel->setInviteOnly(adding);
-				if (adding == true)
-				{
-					sendMsg(clientFd, "Invite-only mode enabled on " + target + "\n");
-				}
-				else
-				{
-					sendMsg(clientFd, "Invite-only mode disabled on " + target + "\n");
-				}
+				sendMsg(clientFd, "Invite-only mode enabled on " + target + "\n");
 			}
-			else if (c == 't')
+			else
 			{
-				channel->setTopicRestrictions(adding);
-				if (adding == true)
-				{
-					sendMsg(clientFd, "Topic Command restrictions are on " + target + "\n");
-				}
-				else
-				{
-					sendMsg(clientFd, "Topic Command restrictions are off " + target + "\n");
-				}
+				sendMsg(clientFd, "Invite-only mode disabled on " + target + "\n");
 			}
-			//else if (c == 'k')
-			//{
-			//	channel->setChannelKey(adding);
-			//	if (adding == true)
-			//	{
-			//		sendMsg(clientFd, "The Channel Key is on " + target + "\n");
-			//	}
-			//	else
-			//	{
-			//		sendMsg(clientFd, "The Channel Key is off " + target + "\n");
-			//	}
-			//}
-			//else if (c == 'o')
-			//{
+		}
+		else if (c == 't')
+		{
+			channel->setTopicRestrictions(adding);
+			if (adding == true)
+			{
+				sendMsg(clientFd, "Topic Command restrictions are on " + target + "\n");
+			}
+			else
+			{
+				sendMsg(clientFd, "Topic Command restrictions are off " + target + "\n");
+			}
+		}
+		//else if (c == 'k')
+		//{
+		//	channel->setChannelKey(adding);
+		//	if (adding == true)
+		//	{
+		//		sendMsg(clientFd, "The Channel Key is on " + target + "\n");
+		//	}
+		//	else
+		//	{
+		//		sendMsg(clientFd, "The Channel Key is off " + target + "\n");
+		//	}
+		//}
+		//else if (c == 'o')
+		//{
 
-			//	if (adding == true)
-			//	{
-			//		channel->setOperatorPrivilege(adding);
-			//		sendMsg(clientFd, "The Operator Privilege is on " + target + "\n");
-			//	}
-			//	else
-			//	{
-			//		channel->setOperatorPrivilege(adding);
-			//		sendMsg(clientFd, "The Operator Privilege is off " + target + "\n");
-			//	}
-			//}
-			else if (c == 'l')
+		//	if (adding == true)
+		//	{
+		//		channel->setOperatorPrivilege(adding);
+		//		sendMsg(clientFd, "The Operator Privilege is on " + target + "\n");
+		//	}
+		//	else
+		//	{
+		//		channel->setOperatorPrivilege(adding);
+		//		sendMsg(clientFd, "The Operator Privilege is off " + target + "\n");
+		//	}
+		//}
+		else if (c == 'l')
+		{
+			if (adding == true)
 			{
-				if (adding == true)
+				if (!tokens[3].empty() && tokens[4].empty() && !tokens[3][1] && tokens[3][0] >= '0' && tokens[3][0] <= '9')
 				{
-					if (!tokens[3].empty() && tokens[4].empty() && !tokens[3][1] && tokens[3][0] >= '0' && tokens[3][0] <= '9')
-					{
-						channel->setUserLimit(std::stoi(tokens[3]));
-						sendMsg(clientFd, "The User Limit is on " + target + "\n");
-					}
-					else
-					{
-						sendMsg(clientFd, "Wrong arguments for 'l' mode" + target + "\n");
-					}
+					channel->setUserLimit(std::stoi(tokens[3]));
+					sendMsg(clientFd, "The User Limit is on " + target + "\n");
 				}
 				else
 				{
-					channel->setUserLimit(INT_MAX);
-					sendMsg(clientFd, "The User Limit is off " + target + "\n");
+					sendMsg(clientFd, "Wrong arguments for 'l' mode" + target + "\n");
 				}
 			}
 			else
 			{
-				sendMsg(clientFd, "Unknown or unsupported mode\n");
+				channel->setUserLimit(INT_MAX);
+				sendMsg(clientFd, "The User Limit is off " + target + "\n");
 			}
 		}
+		else
+		{
+			sendMsg(clientFd, "Unknown or unsupported mode\n");
+		}
+	}
+	else
+	{
+		sendMsg(clientFd, "Unknown or unsupported mode\n");
 	}
 }
 
@@ -242,9 +250,6 @@ void	Server::handleKick(int clientFd, const std::vector<std::string> &tokens)
 	}
 	channel->removeClient(targetUser);
 	sendMsg(targetUser->getFd(), "You have been kicked from " + channelName + " by " + requester->getNickname() + "\n");
-	// Notify other members
-	//std::string kickMsg = targetNick + " was kicked from " + channelName + " by " + requester->getNickname() + "\n";
-	//channel->broadcastMessage(kickMsg, targetUser);
 }
 
 void	Server::handleInvite(int clientFd, std::vector<std::string> &tokens)
@@ -284,11 +289,11 @@ void	Server::handleInvite(int clientFd, std::vector<std::string> &tokens)
 		sendMsg(clientFd, "User is already in the channel\n");
 		return;
 	}
-	//if (channel->isInviteOnly() && !channel->isOperator(inviter))
-	//{
-	//	sendMsg(clientFd, "You must be a channel operator to invite users to an invite-only channel\n");
-	//	return;
-	//}
+	if (channel->isInviteOnly() && !channel->isOperator(inviter))
+	{
+		sendMsg(clientFd, "You must be a channel operator to invite users to an invite-only channel\n");
+		return;
+	}
 	channel->addInvite(invitee);
 	sendMsg(invitee->getFd(), "You have been invited to " + channelName + " by " + inviter->getNickname() + "\n");
 	sendMsg(clientFd, "Invitation sent to " + invitee->getNickname() + "\n");
