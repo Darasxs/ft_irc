@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleCommands.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 20:25:17 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:55:08 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,16 +127,54 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 					sendMsg(clientFd, "Invite-only mode disabled on " + target + "\n");
 				}
 			}
-			//info for darasso
-			//add other modes:
-			//t: Set/remove the restrictions of the TOPIC command to channel operators
-			//k: Set/remove the channel key (password)
-			//o: Give/take channel operator privilege
-			//l: Set/remove the user limit to channel
-			//else if (c == ...)
-			//{
-
-			//}
+			if (c == 't')
+			{
+				channel->setTopicRestrictions(adding);
+				if (adding == true)
+				{
+					sendMsg(clientFd, "Topic Command restrictions are on " + target + "\n");
+				}
+				else
+				{
+					sendMsg(clientFd, "Topic Command restrictions are off " + target + "\n");
+				}
+			}
+			if (c == 'k')
+			{
+				channel->setChannelKey(adding);
+				if (adding == true)
+				{
+					sendMsg(clientFd, "The Channel Key is on " + target + "\n");
+				}
+				else
+				{
+					sendMsg(clientFd, "The Channel Key is off " + target + "\n");
+				}
+			}
+			if (c == 'o')
+			{
+				channel->setOperatorPrivilege(adding);
+				if (adding == true)
+				{
+					sendMsg(clientFd, "The Operator Privilege is on " + target + "\n");
+				}
+				else
+				{
+					sendMsg(clientFd, "The Operator Privilege is off " + target + "\n");
+				}
+			}
+			if (c == 'l')
+			{
+				channel->setUserLimit(adding);
+				if (adding == true)
+				{
+					sendMsg(clientFd, "The User Limit is on " + target + "\n");
+				}
+				else
+				{
+					sendMsg(clientFd, "The User Limit is off " + target + "\n");
+				}
+			}
 			else
 			{
 				sendMsg(clientFd, "Unknown or unsupported mode\n");
