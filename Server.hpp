@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/07/27 19:52:59 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:44:11 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <netdb.h>
 # include <sstream>
+# include <fcntl.h>
 
 # include "Client.hpp"
 # include "Channel.hpp"

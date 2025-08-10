@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/27 19:53:13 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:44:17 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,8 @@ void Server::serverInitialization()
 	}
 	if (listen(serverFd, SOMAXCONN) == -1)
 		throw std::runtime_error("Failed to listen on socket");
-	//if ( fcntl( _serverFD, F_SETFL, O_NONBLOCK ) < 0 )
-	//	throw std::runtime_error( "Failed to set non-blocking mode" );
-	//You can set or retrieve flags that control the behavior of a file descriptor, such as enabling non-blocking mode.
+	if (fcntl( serverFd, F_SETFL, O_NONBLOCK ) < 0)
+		throw std::runtime_error( "Failed to set non-blocking mode" );
 	std::cout << YELLOW;
 	std::cout << "Listening on port " << PORT_NUMBER << "..." << RESET << std::endl;
 }
