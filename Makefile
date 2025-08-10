@@ -6,7 +6,7 @@
 #    By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/30 16:15:27 by paprzyby          #+#    #+#              #
-#    Updated: 2025/07/26 12:11:12 by paprzyby         ###   ########.fr        #
+#    Updated: 2025/08/10 16:50:13 by paprzyby         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,8 +46,6 @@ define PROGRESS_BAR
 	done
 	@printf " 100%% \n"
 endef
-
-#deleted sleep in whileloop
 
 $(NAME): $(OBJ)
 	@echo "======================================================="

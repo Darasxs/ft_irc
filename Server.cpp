@@ -6,28 +6,26 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/10 16:30:24 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 17:20:28 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server()
-{
-	serverRunning = true;
-}
+Server::Server() : serverFd(0), clients(), channels(), password(), fds(), serverRunning(true)	{}
 
-Server::Server(const Server &other)
-{
-	*this = other;
-}
+Server::Server(const Server &other) : serverFd(other.serverFd), clients(other.clients), channels(other.channels), password(other.password), fds(other.fds), serverRunning(other.serverRunning)	{}
 
 Server &Server::operator=(const Server &other)
 {
 	if (this != &other)
 	{
 		this->serverFd = other.serverFd;
-		this->clients = other.clients;
+		this->serverFd = other.serverFd;
+		this->channels = other.channels;
+		this->password = other.password;
+		this->fds = other.fds;
+		this->serverRunning = other.serverRunning;
 	}
 	return (*this);
 }
@@ -305,7 +303,6 @@ void Server::serverStart()
 				throw std::runtime_error("Error: Poll failed");
 			}
 		}
-			throw std::runtime_error("Error: Poll failed");
 		for (size_t i = 0; i < fds.size(); i++)
 		{
 			if (fds[i].revents & POLLIN)
@@ -333,7 +330,7 @@ void	Server::serverClose()
 		}
 	}
 	std::cout << BOLD;
-	std::cout << "Server is being closed..." << std::endl;
+	std::cout << "\nServer is being closed..." << std::endl;
 	std::cout << RESET;
 	for (std::map<std::string, Channel*>::iterator it = channels.begin(); it != channels.end(); ++it)
 	{
@@ -354,7 +351,3 @@ void	Server::serverClose()
 	clients.clear();
 	close(serverFd);
 }
-
-//free memory
-//free address
-//signals

@@ -6,18 +6,13 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:45:36 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/08/10 16:29:20 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:49:52 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRC_HPP
 # define IRC_HPP
 
-# include <iostream>
-# include <cstdlib>
-# include <unistd.h>
-
-# include "colors.hpp"
 # include "Server.hpp"
 
 # define DEFAULT_PORT 6667

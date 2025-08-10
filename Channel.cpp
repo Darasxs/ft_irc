@@ -6,30 +6,32 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/01 21:38:25 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:59:27 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) : name(""), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX), channel_key(""), key(false){}
+Channel::Channel(void) : name(""), topic(""), members(), operators(), invited(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX), channel_key(""), key(false)	{}
 
-Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX), channel_key(""), key(false)	{}
+Channel::Channel(std::string name) : name(name), topic(""), members(), operators(), invited(), inviteOnly(false), lockedTopic(false), user_limit(INT_MAX), channel_key(""), key(false)	{}
 
-Channel::Channel(const Channel &other)
-{
-	(void)other;
-}
-
+Channel::Channel(const Channel &other)	: name(other.name), topic(other.topic), members(other.members), operators(other.operators), invited(other.invited), lockedTopic(other.lockedTopic), user_limit(other.user_limit), channel_key(other.channel_key), key(other.key)	{}
 
 Channel &Channel::operator=(const Channel &other)
 {
 	if (this != &other)
 	{
-		this->name = other.name;
-		this->topic = other.topic;
-		this->members = other.members;
-		this->operators = other.operators;
+		name = other.name;
+		topic = other.topic;
+		members = other.members;
+		operators = other.operators;
+		inviteOnly = other.inviteOnly;
+		lockedTopic = other.lockedTopic;
+		user_limit = other.user_limit;
+		channel_key = other.channel_key;
+		key = other.key;
+		invited = other.invited;
 	}
 	return (*this);
 }
@@ -142,16 +144,6 @@ void Channel::setTopicRestrictions(bool status)
 {
 	lockedTopic = status;
 }
-
-//void Channel::addOperator(Client *client)
-//{
-//	for (std::vector<Client*>::iterator it = operators.begin(); it != operators.end(); ++it)
-//	{
-//		if (*it == client)
-//			return ;
-//	}
-//	operators.push_back(client);
-//}
 
 void Channel::removeMember(Client* client)
 {

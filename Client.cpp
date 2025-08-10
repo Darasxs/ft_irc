@@ -3,22 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/25 16:22:30 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/08/10 17:03:59 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(void) : nickname(""), hostname(nullptr), ip_address(""), clientFd(-1), isOperator(false), lastNicknameChange(0) {}
+Client::Client(void) : nickname(""), username(""), hostname(nullptr), ip_address(""), clientFd(-1), isOperator(false), buffer(""), lastNicknameChange(0)	{}
 
-Client::Client(const Client &other)
-{
-	(void)other;
-	//not finished
-}
+Client::Client(const Client &other) : nickname(other.nickname), username(other.username), hostname(other.hostname), ip_address(other.ip_address), clientFd(other.clientFd), isOperator(other.isOperator), buffer(""), lastNicknameChange(other.lastNicknameChange)	{}
 
 Client &Client::operator=(const Client &other)
 {
@@ -29,6 +25,8 @@ Client &Client::operator=(const Client &other)
 		this->hostname = other.hostname;
 		this->ip_address = other.ip_address;
 		this->isOperator = other.isOperator;
+		this->username = other.username;
+		this->lastNicknameChange = other.lastNicknameChange;
 	}
 	return (*this);
 }

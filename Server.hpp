@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/08/10 16:22:35 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:49:45 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sstream>
 # include <fcntl.h>
 # include <signal.h>
+# include <cstdlib>
 
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -38,6 +39,9 @@ class Server
 		Server(const Server &other);
 		Server &operator=(const Server &other);
 		~Server();
+
+		void						serverClose();
+		void						setIsRunning(bool flag);
 
 		//Getters:
 		Client*						getClient(const std::string &nickname);
@@ -73,9 +77,6 @@ class Server
 		void						handleMode(int clientFd, std::vector<std::string> &tokens);
 		void						handleKick(int clientFd, const std::vector<std::string> &tokens);
 		void						handleTopic(int clientFd, const std::vector<std::string> &tokens);
-
-		void						serverClose();
-		void						setIsRunning(bool flag);
 
 	private:
 		int								serverFd;
