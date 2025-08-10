@@ -6,13 +6,16 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/10 15:44:17 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:30:24 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server()	{}
+Server::Server()
+{
+	serverRunning = true;
+}
 
 Server::Server(const Server &other)
 {
@@ -30,6 +33,11 @@ Server &Server::operator=(const Server &other)
 }
 
 Server::~Server()	{}
+
+void Server::setIsRunning(bool flag)
+{
+	serverRunning = flag;
+}
 
 void Server::serverInitialization()
 {
@@ -52,7 +60,7 @@ void Server::serverInitialization()
 	}
 	if (listen(serverFd, SOMAXCONN) == -1)
 		throw std::runtime_error("Failed to listen on socket");
-	if (fcntl( serverFd, F_SETFL, O_NONBLOCK ) < 0)
+	if (fcntl(serverFd, F_SETFL, O_NONBLOCK) < 0)
 		throw std::runtime_error( "Failed to set non-blocking mode" );
 	std::cout << YELLOW;
 	std::cout << "Listening on port " << PORT_NUMBER << "..." << RESET << std::endl;
@@ -283,9 +291,20 @@ void Server::serverStart()
 
 	serverPollFd = {serverFd, POLLIN, 0};
 	fds.push_back(serverPollFd);
-	while (true)
+	serverRunning = true;
+	while (serverRunning)
 	{
 		if (poll(fds.data(), fds.size(), -1) == -1)
+		{
+			if (errno == EINTR)
+			{
+				continue;
+			}
+			else
+			{
+				throw std::runtime_error("Error: Poll failed");
+			}
+		}
 			throw std::runtime_error("Error: Poll failed");
 		for (size_t i = 0; i < fds.size(); i++)
 		{
@@ -303,3 +322,39 @@ void Server::serverStart()
 		}
 	}
 }
+
+void	Server::serverClose()
+{
+	for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if (it->second)
+		{
+			sendMsg(it->second->getFd(), "Server shutting down. Goodbye!\r\n");
+		}
+	}
+	std::cout << BOLD;
+	std::cout << "Server is being closed..." << std::endl;
+	std::cout << RESET;
+	for (std::map<std::string, Channel*>::iterator it = channels.begin(); it != channels.end(); ++it)
+	{
+		delete it->second;
+	}
+	channels.clear();
+	for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if (it->second)
+		{
+			close(it->second->getFd());
+		}
+	}
+	for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		delete it->second;
+	}
+	clients.clear();
+	close(serverFd);
+}
+
+//free memory
+//free address
+//signals

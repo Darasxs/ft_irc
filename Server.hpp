@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:03:27 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/08/10 15:44:11 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:22:35 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <netdb.h>
 # include <sstream>
 # include <fcntl.h>
+# include <signal.h>
 
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -73,12 +74,16 @@ class Server
 		void						handleKick(int clientFd, const std::vector<std::string> &tokens);
 		void						handleTopic(int clientFd, const std::vector<std::string> &tokens);
 
+		void						serverClose();
+		void						setIsRunning(bool flag);
+
 	private:
 		int								serverFd;
 		std::map<int, Client*>			clients;
 		std::map<std::string, Channel*>	channels;
 		std::string						password;
 		std::vector<pollfd>				fds;
+		bool							serverRunning;
 };
 
 #endif

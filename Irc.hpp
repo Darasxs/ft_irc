@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:45:36 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/06/21 17:59:55 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:29:20 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,7 @@ class	Irc
 		int			input_port;
 		std::string	input_password;
 };
+
+void signalHandler(int);
 
 #endif

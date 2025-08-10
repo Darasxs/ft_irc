@@ -6,11 +6,21 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:24 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/07/20 12:47:29 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:25:20 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Irc.hpp"
+
+Server *globalServer = nullptr;
+
+void signalHandler(int)
+{
+	if (globalServer)
+	{
+		globalServer->setIsRunning(false);
+	}
+}
 
 int	main(int ac, char **av)
 {
@@ -36,7 +46,11 @@ int	main(int ac, char **av)
 			sleep(1);
 			Server server;
 			server.serverInitialization();
+			globalServer = &server;
+			signal(SIGINT, signalHandler);
+			signal(SIGTERM, signalHandler);
 			server.serverStart();
+			server.serverClose();
 		}
 		catch(const std::exception& e)
 		{
