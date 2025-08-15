@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:25 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/08/10 16:46:45 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/16 00:52:53 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Client
 		std::string					getNickname(void);
 		std::string					getUsername(void);
 		time_t						getLastNicknameChange(void);
+		bool						getIsOperator(void);
 
 		//Setters:
 		void 						setFd(int clientFd);

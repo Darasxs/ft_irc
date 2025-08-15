@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 18:01:09 by paprzyby          #+#    #+#             */
-/*   Updated: 2025/08/10 16:48:16 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/16 00:51:24 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Channel
 		void					setTopic(const std::string &topic);
 		void					setKey(bool key);
 		void					setTopicRestrictions(bool status);
-		void					setOperatorPrivilege(bool status);
+		void					setOperatorPrivilege(Client* user, bool isOperator);
 		void					setUserLimit(int limit);
 		void					setInviteOnly(bool status);
 		void					setChannelKey(std::string key);

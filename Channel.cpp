@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 14:17:13 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/10 16:59:27 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/16 00:56:58 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,4 +208,10 @@ void Channel::setKey(bool key)
 bool Channel::getKey(void)
 {
 	return(this->key);
+}
+
+void Channel::setOperatorPrivilege(Client* user, bool isOperator)
+{
+	bool temp = user->getIsOperator();
+	temp = isOperator;
 }

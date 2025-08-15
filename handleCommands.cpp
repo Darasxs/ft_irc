@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:33:04 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/10 16:49:16 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/16 00:54:31 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,20 +165,19 @@ void	Server::handleMode(int clientFd, std::vector<std::string> &tokens)
 				sendMsg(clientFd, "The Channel Key is off " + target + "\n");
 			}
 		}
-		//else if (c == 'o')
-		//{
-
-		//	if (adding == true)
-		//	{
-		//		channel->setOperatorPrivilege(adding);
-		//		sendMsg(clientFd, "The Operator Privilege is on " + target + "\n");
-		//	}
-		//	else
-		//	{
-		//		channel->setOperatorPrivilege(adding);
-		//		sendMsg(clientFd, "The Operator Privilege is off " + target + "\n");
-		//	}
-		//}
+		else if (c == 'o')
+		{
+			if (adding == true)
+			{
+				channel->setOperatorPrivilege(client, adding);
+				sendMsg(clientFd, "The Operator Privilege is on " + target + "\n");
+			}
+			else
+			{
+				channel->setOperatorPrivilege(client, adding);
+				sendMsg(clientFd, "The Operator Privilege is off " + target + "\n");
+			}
+		}
 		else if (c == 'l')
 		{
 			if (adding == true)
@@ -362,14 +361,6 @@ void	Server::handleJoin(int clientFd, std::vector<std::string> &tokens)
 		sendMsg(clientFd, "This channel is already full\n");
 		return ;
 	}
-	//if (!channel->getChannelKey().empty())
-	//{
-	//	if ((tokens[3].empty() || ((channel->getChannelKey())[0] != '\0')) && tokens.size() > 4)
-	//	{
-	//		sendMsg(clientFd, "Key is required to join this channel!\n");
-	//		return ;
-	//	}
-	//}
 	if (channel->getKey())
 	{
 		if (tokens[3].empty() && tokens.size() != 3)

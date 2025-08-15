@@ -6,7 +6,7 @@
 /*   By: paprzyby <paprzyby@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:07:23 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/08/10 17:03:59 by paprzyby         ###   ########.fr       */
+/*   Updated: 2025/08/16 00:53:25 by paprzyby         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,9 @@ void	Client::setLastNicknameChange(time_t nicknameChange)
 time_t	Client::getLastNicknameChange(void)
 {
 	return (this->lastNicknameChange);
+}
+
+bool	Client::getIsOperator(void)
+{
+	return (this->isOperator);
 }
